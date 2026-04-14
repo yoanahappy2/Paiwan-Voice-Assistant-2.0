@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "created_at": "2026-03-27",
+    "updated_at": "2026-03-27 23:45",
+    "classification_version": "2.0",
+    "description": "雙軌數據重構：遊戲軌道（單詞庫 CSV）+ 對話軌道（意圖句子）"
+  },
+  
+  "game_track": {
+    "source": "族語單詞庫 - 工作表1.csv",
+    "description": "單詞發音挑戰遊戲 - 來自官方單詞庫",
+    "data_file": "game_vocabulary.json",
+    "total_words": 1094,
+    "game_levels": 5,
+    "level_summary": {
+      "level_01": {"name": "數字計量", "words": 38, "icon": "🔢"},
+      "level_02": {"name": "動物", "words": 29, "icon": "🐾"},
+      "level_03": {"name": "植物", "words": 18, "icon": "🌿"},
+      "level_04": {"name": "水果", "words": 12, "icon": "🍎"},
+      "level_05": {"name": "身體部位", "words": 25, "icon": "🫀"}
+    },
+    "processing_logic": {
+      "input": "語音輸入",
+      "matching": "精確發音匹配 + 容錯",
+      "output": "匹配度 + 分數 + 動畫反饋",
+      "api_endpoint": "/api/game/challenge"
+    }
+  },
+  
+  "chat_track": {
+    "source": "intent_training.jsonl",
+    "description": "意圖識別對話 - ASR → Intent → LLM 流程",
+    "data_file": "intent_training.jsonl",
+    "total_sentences": 158,
+    "intent_distribution": {
+      "greeting": {"count": 5, "label": "問候"},
+      "identity_query": {"count": 25, "label": "身份詢問"},
+      "quantity_query": {"count": 20, "label": "數量詢問"},
+      "location_query": {"count": 12, "label": "位置詢問"},
+      "object_query": {"count": 5, "label": "物品詢問"},
+      "time_query": {"count": 3, "label": "時間詢問"},
+      "negation": {"count": 28, "label": "否定"},
+      "statement": {"count": 30, "label": "陳述"},
+      "daily_action": {"count": 5, "label": "日常動作"},
+      "thanks": {"count": 2, "label": "感謝"},
+      "farewell": {"count": 1, "label": "道別"},
+      "asr_error_samples": {"count": 28, "label": "ASR錯誤樣本"}
+    },
+    "processing_logic": {
+      "input": "語音/文字輸入",
+      "pipeline": ["ASR轉文字", "綴詞分析", "意圖分類", "LLM回應"],
+      "output": "意圖 + 置信度 + LLM回應",
+      "api_endpoint": "/api/chat",
+      "websocket_endpoint": "/ws/chat"
+    }
+  },
+  
+  "dual_track_architecture": {
+    "description": "雙軌並行架構",
+    "tracks": {
+      "game": {
+        "ui": "GameScene.tsx",
+        "purpose": "單詞發音練習",
+        "data_source": "game_vocabulary.json",
+        "matching": "精確匹配（容錯）"
+      },
+      "chat": {
+        "ui": "ChatWindow.tsx + IntentDebug.tsx",
+        "purpose": "意圖對話理解",
+        "data_source": "intent_training.jsonl",
+        "matching": "意圖分類（LLM）"
+      }
+    },
+    "shared_components": {
+      "asr": "共用 ASR 服務",
+      "audio_recorder": "AudioRecorder.tsx",
+      "affix_analyzer": "綴詞分析引擎"
+    }
+  },
+  
+  "api_endpoints": {
+    "game": {
+      "list_levels": "GET /api/game/levels",
+      "get_challenge": "GET /api/game/level/:id/challenge",
+      "submit_audio": "POST /api/game/challenge (audio blob)",
+      "get_result": "返回匹配度、分數、動畫狀態"
+    },
+    "chat": {
+      "send_message": "POST /api/chat",
+      "websocket": "WS /ws/chat",
+      "get_response": "返回意圖、置信度、LLM回應"
+    }
+  }
+}

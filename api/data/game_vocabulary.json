@@ -1,0 +1,244 @@
+{
+  "metadata": {
+    "source": "東排灣語單詞庫 - 工作表1.csv",
+    "version": "2022年4月1日公告版",
+    "imported_at": "2026-03-27",
+    "total_words": 1094,
+    "description": "排灣族語單詞庫 Source of Truth - 遊戲開發專用"
+  },
+  "game_levels": {
+    "level_01": {
+      "name": "數字計量",
+      "category_id": "01",
+      "icon": "🔢",
+      "description": "學習排灣族語的數字與計量單位",
+      "unlock_condition": "預設解鎖",
+      "words": [
+        {"id": "01-01", "chinese": "一", "paiwan": "ita", "level": "初級", "audio": "ita一.m4a"},
+        {"id": "01-02", "chinese": "二", "paiwan": "drusa", "level": "初級", "audio": "drusa二.m4a"},
+        {"id": "01-03", "chinese": "三", "paiwan": "tjelu", "level": "初級", "audio": "tjelu三.m4a"},
+        {"id": "01-04", "chinese": "四", "paiwan": "sepatj", "level": "初級", "audio": "sepatj四.m4a"},
+        {"id": "01-05", "chinese": "五", "paiwan": "lima", "level": "初級", "audio": "lima五.m4a"},
+        {"id": "01-06", "chinese": "六", "paiwan": "unem", "level": "初級", "audio": "unem六.m4a"},
+        {"id": "01-07", "chinese": "七", "paiwan": "pitju", "level": "初級", "audio": "pitju七.m4a"},
+        {"id": "01-08", "chinese": "八", "paiwan": "alu", "level": "初級", "audio": "alu八.m4a"},
+        {"id": "01-09", "chinese": "九", "paiwan": "siva", "level": "初級", "audio": "siva九.m4a"},
+        {"id": "01-10", "chinese": "十", "paiwan": "tapuluq", "level": "初級", "audio": "tapuluq十.m4a"},
+        {"id": "01-11", "chinese": "十一", "paiwan": "tapuluq saka ita", "level": "初級"},
+        {"id": "01-12", "chinese": "十二", "paiwan": "tapuluq saka drusa", "level": "初級"},
+        {"id": "01-13", "chinese": "十三", "paiwan": "tapuluq saka tjelu", "level": "初級"},
+        {"id": "01-14", "chinese": "十四", "paiwan": "tapuluq saka sepatj", "level": "初級"},
+        {"id": "01-15", "chinese": "十五", "paiwan": "tapuluq saka lima", "level": "初級"},
+        {"id": "01-16", "chinese": "十六", "paiwan": "tapuluq saka unem", "level": "初級"},
+        {"id": "01-17", "chinese": "十七", "paiwan": "tapuluq saka pitju", "level": "初級"},
+        {"id": "01-18", "chinese": "十八", "paiwan": "tapuluq saka alu", "level": "初級"},
+        {"id": "01-19", "chinese": "十九", "paiwan": "tapuluq saka siva", "level": "初級"},
+        {"id": "01-20", "chinese": "二十", "paiwan": "drusapuluq", "level": "初級"},
+        {"id": "01-26", "chinese": "三十", "paiwan": "tjelu a puluq", "level": "初級"},
+        {"id": "01-28", "chinese": "四十", "paiwan": "sepatj a puluq", "level": "初級"},
+        {"id": "01-29", "chinese": "五十", "paiwan": "lima puluq", "level": "初級"},
+        {"id": "01-30", "chinese": "六十", "paiwan": "unem a puluq", "level": "初級"},
+        {"id": "01-31", "chinese": "七十", "paiwan": "pitju a puluq", "level": "初級"},
+        {"id": "01-32", "chinese": "八十", "paiwan": "alu a puluq", "level": "初級"},
+        {"id": "01-33", "chinese": "九十", "paiwan": "siva puluq", "level": "初級"},
+        {"id": "01-34", "chinese": "百", "paiwan": "iday", "level": "中高級"},
+        {"id": "01-35", "chinese": "一百", "paiwan": "tayday", "level": "高級"},
+        {"id": "01-36", "chinese": "兩百", "paiwan": "drusayday", "level": "中級"},
+        {"id": "01-37", "chinese": "一千", "paiwan": "kuzulj", "level": "中高級"},
+        {"id": "01-43", "chinese": "全部", "paiwan": "penuljat", "level": "初級"}
+      ],
+      "difficulty_tiers": {
+        "beginner": {"count": 20, "range": ["01-01", "01-20"]},
+        "intermediate": {"count": 8, "range": ["01-26", "01-33"]},
+        "advanced": {"count": 6, "range": ["01-34", "01-43"]}
+      }
+    },
+    "level_02": {
+      "name": "動物",
+      "category_id": "07",
+      "icon": "🐾",
+      "description": "學習各種動物的排灣族語名稱",
+      "unlock_condition": "通過第一關",
+      "words": [
+        {"id": "07-02", "chinese": "豬", "paiwan": "dridri", "level": "初級", "notes": "qacang 豬"},
+        {"id": "07-03", "chinese": "狗", "paiwan": "vatu", "level": "初級"},
+        {"id": "07-04", "chinese": "羊", "paiwan": "sizi", "level": "初級"},
+        {"id": "07-05", "chinese": "貓", "paiwan": "ngiyau", "level": "初級"},
+        {"id": "07-06", "chinese": "鳥", "paiwan": "qayaqayam", "level": "初級"},
+        {"id": "07-07", "chinese": "魚", "paiwan": "ciqaw", "level": "初級"},
+        {"id": "07-08", "chinese": "雞", "paiwan": "vuyu", "level": "初級"},
+        {"id": "07-09", "chinese": "猴子", "paiwan": "drail", "level": "初級"},
+        {"id": "07-10", "chinese": "牛", "paiwan": "gung", "level": "初級"},
+        {"id": "07-11", "chinese": "老鼠", "paiwan": "kulavau", "level": "初級", "notes": "kiki 家鼠"},
+        {"id": "07-12", "chinese": "青蛙", "paiwan": "ceqer", "level": "初級"},
+        {"id": "07-13", "chinese": "貓頭鷹", "paiwan": "ljequ", "level": "初級"},
+        {"id": "07-14", "chinese": "穿山甲", "paiwan": "qam", "level": "中高級"},
+        {"id": "07-15", "chinese": "山豬", "paiwan": "vavuy", "level": "高級"},
+        {"id": "07-18", "chinese": "烏龜", "paiwan": "cacukecukan", "level": "中級"},
+        {"id": "07-20", "chinese": "飛鼠", "paiwan": "lava", "level": "中級"},
+        {"id": "07-23", "chinese": "熊", "paiwan": "cumay", "level": "中級"},
+        {"id": "07-21", "chinese": "豹", "paiwan": "likuljaw", "level": "中高級"},
+        {"id": "07-22", "chinese": "水鹿", "paiwan": "venan", "level": "中高級"},
+        {"id": "07-24", "chinese": "山羌", "paiwan": "takec", "level": "中高級"},
+        {"id": "07-30", "chinese": "松鼠", "paiwan": "vutj", "level": "中高級"},
+        {"id": "07-35", "chinese": "蜜蜂", "paiwan": "tjaynan", "level": "中級"},
+        {"id": "07-39", "chinese": "蚯蚓", "paiwan": "qatjudray", "level": "中級"},
+        {"id": "07-42", "chinese": "蝦", "paiwan": "quzang", "level": "中級"},
+        {"id": "07-43", "chinese": "大象", "paiwan": "zu", "level": "中高級"},
+        {"id": "07-44", "chinese": "馬", "paiwan": "ba", "level": "中高級"},
+        {"id": "07-46", "chinese": "螃蟹", "paiwan": "gang", "level": "高級"},
+        {"id": "07-55", "chinese": "螞蟻", "paiwan": "sasiq", "level": "中高級"},
+        {"id": "07-40", "chinese": "老鷹", "paiwan": "tjakanga", "level": "高級"}
+      ],
+      "difficulty_tiers": {
+        "beginner": {"count": 13, "level_filter": "初級"},
+        "intermediate": {"count": 10, "level_filter": "中級"},
+        "advanced": {"count": 6, "level_filter": ["中高級", "高級"]}
+      }
+    },
+    "level_03": {
+      "name": "植物",
+      "category_id": "08",
+      "icon": "🌿",
+      "description": "學習各種植物的排灣族語名稱",
+      "unlock_condition": "通過第二關",
+      "words": [
+        {"id": "08-01", "chinese": "香蕉", "paiwan": "veljevelj", "level": "中級"},
+        {"id": "08-02", "chinese": "稻穀", "paiwan": "paday", "level": "中級"},
+        {"id": "08-03", "chinese": "樹", "paiwan": "kasiw", "level": "高級"},
+        {"id": "08-04", "chinese": "芋頭", "paiwan": "vasa", "level": "中級"},
+        {"id": "08-05", "chinese": "甘蔗", "paiwan": "tjevus", "level": "中級"},
+        {"id": "08-06", "chinese": "葉子", "paiwan": "asaw", "level": "中級"},
+        {"id": "08-07", "chinese": "甘藷", "paiwan": "vurasi", "level": "高級"},
+        {"id": "08-09", "chinese": "花朵", "paiwan": "vuciyar", "level": "高級"},
+        {"id": "08-13", "chinese": "檳榔", "paiwan": "saviki", "level": "中高級"},
+        {"id": "08-14", "chinese": "竹子", "paiwan": "qau", "level": "高級"},
+        {"id": "08-17", "chinese": "竹筍", "paiwan": "cuvuq", "level": "中級"},
+        {"id": "08-19", "chinese": "鳳梨", "paiwan": "pangudralj", "level": "高級"},
+        {"id": "08-20", "chinese": "草", "paiwan": "cemel", "level": "高級"},
+        {"id": "08-24", "chinese": "水果", "paiwan": "kudamunu", "level": "高級"},
+        {"id": "08-30", "chinese": "姑婆芋", "paiwan": "qaynguway", "level": "中級"},
+        {"id": "08-56", "chinese": "地瓜", "paiwan": "vurasi", "level": "初級"},
+        {"id": "08-57", "chinese": "番石榴", "paiwan": "ljaves", "level": "初級"},
+        {"id": "08-54", "chinese": "辣椒", "paiwan": "kamangulj", "level": "中級"}
+      ],
+      "difficulty_tiers": {
+        "beginner": {"count": 2, "level_filter": "初級"},
+        "intermediate": {"count": 10, "level_filter": "中級"},
+        "advanced": {"count": 6, "level_filter": ["中高級", "高級"]}
+      }
+    },
+    "level_04": {
+      "name": "水果",
+      "category_id": "08",
+      "icon": "🍎",
+      "description": "專注學習水果類單詞",
+      "unlock_condition": "通過第三關",
+      "words": [
+        {"id": "08-01", "chinese": "香蕉", "paiwan": "veljevelj", "level": "中級"},
+        {"id": "08-08", "chinese": "柑橘", "paiwan": "tjiyanes", "level": "中級"},
+        {"id": "08-22", "chinese": "桃子", "paiwan": "qudis", "level": "中高級"},
+        {"id": "08-23", "chinese": "李子", "paiwan": "sumumu", "level": "高級"},
+        {"id": "08-19", "chinese": "鳳梨", "paiwan": "pangudralj", "level": "高級"},
+        {"id": "08-40", "chinese": "百香果", "paiwan": "tukisu", "level": "高級"},
+        {"id": "08-52", "chinese": "柚子", "paiwan": "kamuraw", "level": "中高級"},
+        {"id": "08-46", "chinese": "梅子", "paiwan": "umi", "level": "高級"},
+        {"id": "08-45", "chinese": "野草莓", "paiwan": "tjavuvuk", "level": "中高級"},
+        {"id": "08-57", "chinese": "番石榴", "paiwan": "ljaves", "level": "初級"},
+        {"id": "08-27", "chinese": "蕃茄", "paiwan": "tjamuni", "level": "高級"},
+        {"id": "08-29", "chinese": "野百合", "paiwan": "qungalj", "level": "中高級"}
+      ],
+      "difficulty_tiers": {
+        "beginner": {"count": 1, "level_filter": "初級"},
+        "intermediate": {"count": 3, "level_filter": "中級"},
+        "advanced": {"count": 8, "level_filter": ["中高級", "高級"]}
+      }
+    },
+    "level_05": {
+      "name": "身體部位",
+      "category_id": "06",
+      "icon": "🫀",
+      "description": "學習身體各部位的排灣族語名稱",
+      "unlock_condition": "通過第四關",
+      "words": [
+        {"id": "06-01", "chinese": "耳朵", "paiwan": "calinga", "level": "初級"},
+        {"id": "06-02", "chinese": "大腿", "paiwan": "djapalj", "level": "初級"},
+        {"id": "06-03", "chinese": "眼睛", "paiwan": "maca", "level": "初級"},
+        {"id": "06-04", "chinese": "臉", "paiwan": "mudingan", "level": "初級"},
+        {"id": "06-05", "chinese": "嘴巴", "paiwan": "angalj", "level": "初級"},
+        {"id": "06-06", "chinese": "頭", "paiwan": "qulu", "level": "初級"},
+        {"id": "06-07", "chinese": "指甲", "paiwan": "kaljusekusan", "level": "初級"},
+        {"id": "06-08", "chinese": "手", "paiwan": "lima", "level": "初級"},
+        {"id": "06-09", "chinese": "身體", "paiwan": "kinacavacavan", "level": "初級"},
+        {"id": "06-10", "chinese": "鼻子", "paiwan": "ngudjus", "level": "初級"},
+        {"id": "06-11", "chinese": "腳", "paiwan": "kula", "level": "初級"},
+        {"id": "06-12", "chinese": "牙齒", "paiwan": "aljis", "level": "高級"},
+        {"id": "06-13", "chinese": "頭髮", "paiwan": "quvalj", "level": "高級"},
+        {"id": "06-14", "chinese": "血", "paiwan": "djamuq", "level": "中級"},
+        {"id": "06-15", "chinese": "肉", "paiwan": "vutjulj", "level": "中級"},
+        {"id": "06-16", "chinese": "額頭", "paiwan": "djaqis", "level": "中級"},
+        {"id": "06-17", "chinese": "肚子", "paiwan": "tjiyalj", "level": "中級"},
+        {"id": "06-20", "chinese": "肩膀", "paiwan": "qavan", "level": "中級"},
+        {"id": "06-22", "chinese": "背部", "paiwan": "uqulj", "level": "中級"},
+        {"id": "06-28", "chinese": "心臟", "paiwan": "qavuvung", "level": "中級"},
+        {"id": "06-31", "chinese": "膝蓋", "paiwan": "cungal", "level": "中級"},
+        {"id": "06-42", "chinese": "舌頭", "paiwan": "sema", "level": "中級"},
+        {"id": "06-47", "chinese": "脖子", "paiwan": "liqu", "level": "中級"},
+        {"id": "06-55", "chinese": "嘴唇", "paiwan": "ljelet", "level": "中級"},
+        {"id": "06-17", "chinese": "腰", "paiwan": "siyuc", "level": "中級"}
+      ],
+      "difficulty_tiers": {
+        "beginner": {"count": 11, "level_filter": "初級"},
+        "intermediate": {"count": 14, "level_filter": "中級"},
+        "advanced": {"count": 2, "level_filter": "高級"}
+      }
+    }
+  },
+  "difficulty_settings": {
+    "beginner": {
+      "name": "初級",
+      "icon": "🌱",
+      "time_limit": 15,
+      "points_multiplier": 1.0,
+      "lives": 5,
+      "match_threshold": 70
+    },
+    "intermediate": {
+      "name": "中級",
+      "icon": "🌿",
+      "time_limit": 12,
+      "points_multiplier": 1.5,
+      "lives": 4,
+      "match_threshold": 75
+    },
+    "advanced": {
+      "name": "高級",
+      "icon": "🌳",
+      "time_limit": 10,
+      "points_multiplier": 2.0,
+      "lives": 3,
+      "match_threshold": 80
+    }
+  },
+  "matching_config": {
+    "phonetic_rules": {
+      "tj→t": {"pattern": "/tj/g", "replacement": "t"},
+      "lj→l": {"pattern": "/lj/g", "replacement": "l"},
+      "dj→d": {"pattern": "/dj/g", "replacement": "d"},
+      "u→o": {"type": "fuzzy_match", "distance": 1},
+      "e→i": {"type": "fuzzy_match", "distance": 1}
+    },
+    "scoring": {
+      "perfect": {"min_match": 95, "points": 100, "bonus": 50, "animation": "excited"},
+      "excellent": {"min_match": 90, "points": 90, "bonus": 30, "animation": "happy"},
+      "good": {"min_match": 80, "points": 80, "bonus": 10, "animation": "happy"},
+      "pass": {"min_match": 70, "points": 60, "bonus": 0, "animation": "idle"},
+      "fail": {"min_match": 0, "points": 0, "bonus": 0, "animation": "sad"}
+    }
+  },
+  "audio_config": {
+    "base_path": "/audio/paiwan/",
+    "format": "m4a",
+    "fallback_tts": true
+  }
+}

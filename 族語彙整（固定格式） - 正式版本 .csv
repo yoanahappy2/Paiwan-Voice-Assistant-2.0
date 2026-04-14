@@ -1,0 +1,115 @@
+file_path,transcription,meaning,speaker_id
+audio/s01-ita.m4a,ita,一,s01 
+audio/s02-ita.m4a,ita,一,s02
+audio/s03-ita.m4a,ita,一,s03
+audio/s01-drusa.m4a,drusa,二,s01 
+audio/s02-drusa.m4a,drusa,二,s02
+audio/s03-drusa.m4a,drusa,二,s03
+audio/s01-tjelu.m4a,tjelu,三,s01 
+audio/s02-tjelu.m4a,tjelu,三,s02
+audio/s03-tjelu.m4a,tjelu,三,s03
+audio/s01-sepatj.m4a,sepatj,四,s01 
+audio/s02-sepatj.m4a,sepatj,四,s02
+audio/s03-sepatj.m4a,sepatj,四,s03
+audio/s01-lima.m4a,lima,五,s01 
+audio/s02-lima.m4a,lima,五,s02
+audio/s03-lima.m4a,lima,五,s03
+audio/s01-unem.m4a,unem,六,s01 
+audio/s02-unem.m4a,unem,六,s02
+audio/s03-unem.m4a,unem,六,s03
+audio/s01-pitju.m4a,pitju,七,s01 
+audio/s02-pitju.m4a,pitju,七,s02
+audio/s03-pitju.m4a,pitju,七,s03
+audio/s01-alu.m4a,alu,八,s01 
+audio/s02-alu.m4a,alu,八,s02
+audio/s03-alu.m4a,alu,八,s03
+audio/s01-siva.m4a,siva,九,s01 
+audio/s02-siva.m4a,siva,九,s02
+audio/s03-siva.m4a,siva,九,s03
+audio/s01-tapuluq.m4a,tapuluq,十,s01 
+audio/s02-tapuluq.m4a,tapuluq,十,s02
+audio/s03-tapuluq.m4a,tapuluq,十,s03
+audio/s01-tapuluq saka ita.m4a,tapuluq saka ita,十一,s01 
+audio/s01-tapuluq saka drusa.m4a,tapuluq saka drusa,十二,s01 
+audio/s01-tapuluq saka tjelu.m4a,tapuluq saka tjelu,十三,s01 
+audio/s01-tapuluq saka sepatj.m4a,tapuluq saka sepatj,十四,s01 
+audio/s01-tapuluq saka lima.m4a,tapuluq saka lima,十五,s01 
+audio/s01-tapuluq saka unem.m4a,tapuluq saka unem,十六,s01 
+audio/s01-tapuluq saka pitju.m4a,tapuluq saka pitju,十七,s01 
+audio/s01-tapuluq saka alu.m4a,tapuluq saka alu,十八,s01 
+audio/s01-tapuluq saka siva.m4a,tapuluq saka siva,十九,s01 
+audio/s01-drusapuluq.m4a,drusapuluq,二十,s01 
+audio/s01-tisun.m4a,tisun,你,s01 
+audio/s01-tiaen.m4a,tiaen,我,s01 
+audio/s01-timadju.m4a,timadju,他,s01 
+audio/s01-timun.m4a,timun,你們,s01 
+audio/s01-timitja.m4a,timitja,我們,s01 
+audio/s01-tiyamadju.m4a,tiyamadju,他們,s01 
+audio/s01-nimun.m4a,nimun,你們的,s01 
+audio/s01-nimitja.m4a,nimitja,我們的,s01 
+audio/s01-niyamadju.m4a,niyamadju,他們的,s01 
+audio/s01-nisun.m4a,nisun,你的,s01 
+audio/s01-niyaken.m4a,niyaken,我的,s01 
+audio/s01-nimadju.m4a,nimadju,他的,s01 
+audio/s01-tiyamen.m4a,tiyamen,我們(排除式),s01 
+audio/s01-titjen.m4a,titjen,咱們(包含式),s01 
+audio/s01-nitjen.m4a,nitjen,咱們的,s01 
+audio/s01-azuwa.m4a,azuwa,那個,s01 
+audio/s01-aycu.m4a,aycu,這個,s01 
+audio/s01-imaza.m4a,imaza,這裡,s01 
+audio/s01-azuwa.m4a,azuwa,那裡,s01 
+audio/s01-manasika.m4a,manasika,所以,s01 
+audio/s01-pida.m4a,pida,多少,s01 
+audio/s01-anema.m4a,anema,什麼,s01 
+audio/s01-kemuda.m4a,kemuda,如何,s01
+audio/s01-makudakuda.m4a,makudakuda,何時(未發生),s01
+audio/s01-tima.m4a,tima,誰,s01
+audio/s01-manu tima.m4a,manu tima,是哪一個,s01
+audio/s01-inu.m4a,inu,哪裡,s01
+audio/s01-nima.m4a,nima,是誰的,s01
+audio/s01-makuda.m4a,makuda,怎麼,s01
+audio/s01-pida.m4a,pida,多少,s01
+audio/s01-mapida.m4a,mapida,多少(指人數),s01
+audio/s01-inuwan.m4a,inuwan,什麼地方,s01
+audio/s01-kamakudakuda.m4a,kamakudakuda,何時(已發生),s01
+audio/s01-akumaya.m4a,akumaya,為什麼,s01
+audio/s03-iku.m4a,iku,尾巴,s03
+audio/s03-qacang.m4a,qacang,豬,s03
+audio/s03-vatu.m4a,vatu,狗,s03
+audio/s03-sizi.m4a,sizi,羊,s03
+audio/s03-ngiyau.m4a,ngiyau,貓,s03
+audio/s03-qayaqayam.m4a,qayaqayam,鳥,s03
+audio/s03-ciqaw.m4a,ciqaw,魚,s03
+audio/s03-vuyu.m4a,vuyu,雞,s03
+audio/s03-drail.m4a,drail,猴子,s03
+audio/s03-gung.m4a,gung,牛,s03
+audio/s03-kulavau.m4a,kulavau,老鼠,s03
+audio/s03-ceqer.m4a,ceqer,青蛙,s03
+audio/s03-ljequ.m4a,ljequ,貓頭鷹,s03
+audio/s03-qam.m4a,qam,穿山甲,s03
+audio/s03-vavuy.m4a,vavuy,山豬,s03
+audio/s03-qemudjalj.m4a,qemudjalj,下雨,s03
+audio/s03-qadaw.m4a,qadaw,太陽,s03
+audio/s03-qiljas.m4a,qiljas,月亮,s03
+audio/s03-kalevelevan.m4a,kalevelevan,天空,s03
+audio/s03-vitjuqan.m4a,vitjuqan,星星,s03
+audio/s03-qudjalj.m4a,qudjalj,雨,s03
+audio/s03-sulja.m4a,sulja,雪,s03
+audio/s03-zung.m4a,zung,雷,s03
+audio/s03-dalek.m4a,dalek,露水,s03
+audio/s03-qerepus.m4a,qerepus,雲,s03
+audio/s03-cevulj.m4a,cevulj,煙,s03
+audio/s03-ladjap.m4a,ladjap,閃電,s03
+audio/s03-quma.m4a,quma,旱田,s03
+audio/s03-sapuy.m4a,sapuy,火,s03
+audio/s03-kuli.m4a,kuli,冰,s03
+audio/s03-luni.m4a,luni,地震,s03
+audio/s03-kakakaka.m4a,kakakaka,影子,s03
+audio/s03-venali.m4a,venali,颱風,s03
+audio/s03-kaljavevuan.m4a,kaljavevuan,春天,s03
+audio/s03-ljavek.m4a,ljavek,海邊,s03
+audio/s03-quljivangraw.m4a,quljivangraw,彩虹,s03
+audio/s03-maledep.m4a,maledep,日落,s03
+audio/s03-masulem.m4a,masulem,天黑,s03
+audio/s03-meljay.m4a,meljay,雨停,s03
+audio/s03-cemdas.m4a,cemdas,日出,s03

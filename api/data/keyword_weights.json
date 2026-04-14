@@ -1,0 +1,128 @@
+{
+  "keyword_weights": {
+    "question_words": {
+      "tima": {"intent": "identity_query", "weight": 0.95},
+      "pida": {"intent": "quantity_query", "weight": 0.95},
+      "mapida": {"intent": "quantity_query", "weight": 0.95},
+      "inu": {"intent": "location_query", "weight": 0.95},
+      "kemasinu": {"intent": "location_query", "weight": 0.95},
+      "ainu": {"intent": "location_query", "weight": 0.95},
+      "anema": {"intent": "object_query", "weight": 0.95},
+      "nungida": {"intent": "time_query", "weight": 0.95},
+      "akumaya": {"intent": "reason_query", "weight": 0.95},
+      "kemuda": {"intent": "method_query", "weight": 0.95}
+    },
+    "negation": {
+      "maya": {"intent": "negation", "negation_type": "instruction_negation", "weight": 0.92},
+      "ini": {"intent": "negation", "negation_type": "statement_negation", "weight": 0.90},
+      "inika": {"intent": "negation", "negation_type": "statement_negation", "weight": 0.90}
+    },
+    "greeting": {
+      "tarivak": {"intent": "greeting", "weight": 0.88},
+      "masalu": {"intent": "thanks", "weight": 0.88},
+      "vaikanga": {"intent": "farewell", "weight": 0.88}
+    },
+    "daily_action": {
+      "qemudalj": {"intent": "daily_action", "verb_focus": "raining", "weight": 0.85},
+      "kivangavang": {"intent": "daily_action", "verb_focus": "playing", "weight": 0.85},
+      "pacun": {"intent": "daily_action", "verb_focus": "looking", "weight": 0.85},
+      "mangetjez": {"intent": "daily_action", "verb_focus": "coming", "weight": 0.85},
+      "vaik": {"intent": "daily_action", "verb_focus": "going", "weight": 0.85},
+      "keman": {"intent": "daily_action", "verb_focus": "eating", "weight": 0.85},
+      "kiljavaran": {"intent": "daily_action", "verb_focus": "speaking", "weight": 0.85}
+    }
+  },
+  "affix_weights": {
+    "uri": {"type": "future_tense", "weight": 0.85},
+    "na": {"type": "past_tense", "weight": 0.80},
+    "kem-": {"type": "action_verb", "weight": 0.75},
+    "pa-": {"type": "causative", "weight": 0.75},
+    "ki-": {"type": "acquisition", "weight": 0.75},
+    "si-": {"type": "reciprocal", "weight": 0.75},
+    "mu-": {"type": "motion", "weight": 0.75},
+    "ma-": {"type": "stative", "weight": 0.75},
+    "tja-": {"type": "collective", "weight": 0.75},
+    "tju-": {"type": "directional", "weight": 0.75}
+  },
+  "phonetic_correction": {
+    "m_v_confusion": {
+      "description": "首字母 m/v 混淆 (简报提到)",
+      "rules": [
+        {"pattern": "^m", "candidates": ["v"], "weight": 0.85},
+        {"pattern": "^v", "candidates": ["m"], "weight": 0.85}
+      ],
+      "error_variants": {
+        "masalu": ["vasalu", "basalu"],
+        "vasalu": ["masalu", "basalu"],
+        "mavan": ["vavan", "bavan"],
+        "mangetjez": ["vangetjez", "bangetjez"]
+      }
+    },
+    "tj_t_confusion": {
+      "description": "tj/t 混淆",
+      "rules": [
+        {"pattern": "tj", "candidates": ["t"], "weight": 0.80},
+        {"pattern": "t", "candidates": ["tj"], "weight": 0.50}
+      ]
+    },
+    "sima_siva_confusion": {
+      "description": "sima/siva 混淆 (简报提到)",
+      "rules": [
+        {"pattern": "sima", "candidates": ["siva"], "weight": 0.60},
+        {"pattern": "siva", "candidates": ["sima"], "weight": 0.60}
+      ]
+    },
+    "lj_l_confusion": {
+      "description": "lj/l 混淆",
+      "rules": [
+        {"pattern": "lj", "candidates": ["l"], "weight": 0.70}
+      ]
+    },
+    "dj_d_confusion": {
+      "description": "dj/d 混淆",
+      "rules": [
+        {"pattern": "dj", "candidates": ["d"], "weight": 0.70}
+      ]
+    }
+  },
+  "keyword_error_variants": {
+    "description": "关键词错误变体映射 - 用于意图识别",
+    "thanks": {
+      "masalu": {"weight": 0.88},
+      "vasalu": {"weight": 0.75, "corrected_from": "masalu"},
+      "basalu": {"weight": 0.70, "corrected_from": "masalu"}
+    },
+    "statement": {
+      "caucau": {"weight": 0.90},
+      "kinaizuavan": {"weight": 0.85},
+      "sengesengan": {"weight": 0.82}
+    }
+  },
+  "dialect_variants": {
+    "eastern_paiwan": {
+      "description": "东排湾语 (本专案主要方言)",
+      "features": ["受到卑南族、阿美族影响", "集团移住导致多口音"]
+    },
+    "northern_paiwan": {
+      "description": "北排湾语",
+      "features": ["发音差异", "词汇差异"]
+    },
+    "southern_paiwan": {
+      "description": "南排湾语",
+      "features": ["语调差异"]
+    }
+  },
+  "priority_order": [
+    "question_words",
+    "negation", 
+    "greeting",
+    "daily_action",
+    "affix_weights"
+  ],
+  "metadata": {
+    "version": "1.2",
+    "last_updated": "2026-03-26 20:15",
+    "maintainer": "Architect",
+    "notes": "抗干扰压力测试后调整: (1) 调高 m↔v 权重 0.7→0.85; (2) 新增 keyword_error_variants 区块; (3) 新增 caucau, kinaizuavan 关键词"
+  }
+}

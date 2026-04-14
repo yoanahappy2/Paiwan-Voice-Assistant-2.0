@@ -1,0 +1,62 @@
+[
+  {
+    "text": "a kinaizuavan nua paiwan a caucau i pasa talja navanavaljan ta taiwan",
+    "original_text": "a kinaizuavan nua paiwan a caucau i pasa tjalja navanavaljan ta taiwan",
+    "description": "ASR错误样本 - ['tj→t']",
+    "expected_intent": "statement",
+    "expected_negation_type": null,
+    "error_type": "phonetic_confusion",
+    "applied_rules": [
+      "tj→t"
+    ]
+  },
+  {
+    "text": "pida matu naicu a kakedrian?",
+    "original_text": "pida vatu naicu a kakedrian?",
+    "description": "ASR错误样本 - ['\\\\bv→m']",
+    "expected_intent": "quantity_query",
+    "expected_negation_type": null,
+    "error_type": "phonetic_confusion",
+    "applied_rules": [
+      "\\bv→m"
+    ]
+  },
+  {
+    "text": "vangetjez nungida?",
+    "original_text": "mangetjez nungida?",
+    "description": "ASR错误样本 - ['\\\\bm→v']",
+    "expected_intent": "time_query",
+    "expected_negation_type": null,
+    "error_type": "phonetic_confusion",
+    "applied_rules": [
+      "\\bm→v"
+    ]
+  },
+  {
+    "text": "ka lesasaw ti kama, na masiljinay timadjo?",
+    "original_text": "ka ljesasaw ti kama, na masiljinay timadju?",
+    "description": "ASR错误样本 - ['lj→l', '\\\\bm→v', '\\\\bv→m', 'u→o']",
+    "expected_intent": "identity_query",
+    "expected_negation_type": null,
+    "error_type": "phonetic_confusion",
+    "applied_rules": [
+      "lj→l",
+      "\\bm→v",
+      "\\bv→m",
+      "u→o"
+    ]
+  },
+  {
+    "text": "vasalu aravac ta ta kilivak",
+    "original_text": "masalu aravac ta tja kiljivak",
+    "description": "ASR错误样本 - ['tj→t', 'lj→l', '\\\\bm→v']",
+    "expected_intent": "thanks",
+    "expected_negation_type": null,
+    "error_type": "phonetic_confusion",
+    "applied_rules": [
+      "tj→t",
+      "lj→l",
+      "\\bm→v"
+    ]
+  }
+]
