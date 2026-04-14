@@ -123,13 +123,14 @@ def voice_chat(audio_path: str, vuvu: VuvuService = None) -> dict:
     # Step 2: LLM 對話生成
     print(f"📝 辨識結果: {recognized} (信心度: {confidence:.2f})")
     print("👵 vuvu 思考中...")
-    reply = vuvu.chat(recognized)
+    result = vuvu.chat_with_thinking(recognized)
 
     return {
         "recognized_text": recognized,
         "raw_text": asr_result.get("raw_text", ""),
         "confidence": confidence,
-        "vuvu_reply": reply,
+        "vuvu_reply": result["reply"],
+        "vuvu_thinking": result["thinking"],
         "asr_logic": asr_result.get("logic", ""),
     }
 

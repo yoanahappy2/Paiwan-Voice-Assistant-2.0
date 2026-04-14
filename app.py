@@ -26,21 +26,15 @@ vuvu = VuvuService()
 def process_audio(audio_path):
     """
     處理錄音: ASR → LLM → 回覆
-
-    Args:
-        audio_path: Gradio 錄音元件傳入的音檔路徑
-
-    Returns:
-        (recognized_text, reply_text)
     """
     if audio_path is None:
-        return "", "請先錄音或上傳音檔，vuvu 在等你說話呢！"
+        return "", "", "請先錄音或上傳音檔，vuvu 在等你說話呢！"
 
     # Step 1: ASR
     asr_result = recognize_audio(audio_path)
 
     if asr_result.get("error"):
-        return "", f"❌ ASR 錯誤: {asr_result['error']}"
+        return "", "", f"❌ ASR 錯誤: {asr_result['error']}"
 
     recognized = asr_result.get("text", "")
     confidence = asr_result.get("confidence", 0.0)
@@ -48,7 +42,7 @@ def process_audio(audio_path):
     logic = asr_result.get("logic", "")
 
     if not recognized:
-        return "", "🔇 辨識結果為空，請再錄一次試試！"
+        return "", "", "🔇 辨識結果為空，請再錄一次試試！"
 
     # 組合辨識資訊
     display_parts = [f"🎤 你說的排灣語: **{recognized}**"]
@@ -60,25 +54,33 @@ def process_audio(audio_path):
 
     recognized_display = "\n".join(display_parts)
 
-    # Step 2: LLM
-    reply = vuvu.chat(recognized)
+    # Step 2: LLM (含思考過程)
+    from llm_service import VuvuService
+    llm_result = vuvu.chat_with_thinking(recognized)
 
-    return recognized_display, reply
+    thinking_display = ""
+    if llm_result.get("thinking"):
+        thinking_display = f"🧠 **vuvu 的思考:**\n{llm_result['thinking']}"
+
+    return recognized_display, thinking_display, llm_result["reply"]
 
 
 def process_text(text):
     """純文字對話（備用模式）"""
     if not text.strip():
-        return "", "請輸入文字跟 vuvu 聊天！"
+        return "", "", "請輸入文字跟 vuvu 聊天！"
 
-    reply = vuvu.chat(text.strip())
-    return "", reply
+    llm_result = vuvu.chat_with_thinking(text.strip())
+    thinking_display = ""
+    if llm_result.get("thinking"):
+        thinking_display = f"🧠 **vuvu 的思考:**\n{llm_result['thinking']}"
+    return "", thinking_display, llm_result["reply"]
 
 
 def reset_chat():
     """重置對話"""
     vuvu.reset()
-    return "", "", "✅ 對話已重置，vuvu 重新開始了！"
+    return "", "", "", "✅ 對話已重置，vuvu 重新開始了！"
 
 
 # ============================================
@@ -159,6 +161,12 @@ with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
                 label="🎤 辨識結果",
                 value="等待輸入...",
             )
+            # vuvu 思考過程
+            thinking_output = gr.Markdown(
+                label="🧠 vuvu 的思考過程",
+                value="",
+                visible=True,
+            )
             # vuvu 回覆
             reply_output = gr.Markdown(
                 label="👵 vuvu Maliq 的回覆",
@@ -173,20 +181,20 @@ with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
     submit_audio.click(
         fn=process_audio,
         inputs=[audio_input],
-        outputs=[recognized_output, reply_output],
+        outputs=[recognized_output, thinking_output, reply_output],
     )
 
     # 文字送出
     submit_text.click(
         fn=process_text,
         inputs=[text_input],
-        outputs=[recognized_output, reply_output],
+        outputs=[recognized_output, thinking_output, reply_output],
     )
 
     # 重置
     reset_btn.click(
         fn=reset_chat,
-        outputs=[audio_input, text_input, reply_output],
+        outputs=[audio_input, text_input, thinking_output, reply_output],
     )
 
     # 場景按鈕
@@ -194,7 +202,7 @@ with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
         btn.click(
             fn=lambda t=text: process_text(t),
             inputs=[],
-            outputs=[recognized_output, reply_output],
+            outputs=[recognized_output, thinking_output, reply_output],
         )
 
 
