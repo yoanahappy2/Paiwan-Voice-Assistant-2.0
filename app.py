@@ -10,13 +10,14 @@ app.py
 """
 
 import gradio as gr
-from voice_chat import recognize_audio, VuvuService
+from llm_service import VuvuService
 
 # ============================================
 # 全域 vuvu 實例（保持對話上下文）
 # ============================================
 
-vuvu = VuvuService()
+# RAG 模式啟用（智譜 embedding-3 + FAISS）
+vuvu = VuvuService(use_rag=True)
 
 
 # ============================================
@@ -54,8 +55,7 @@ def process_audio(audio_path):
 
     recognized_display = "\n".join(display_parts)
 
-    # Step 2: LLM (含思考過程)
-    from llm_service import VuvuService
+    # Step 2: LLM + RAG（含思考過程）
     llm_result = vuvu.chat_with_thinking(recognized)
 
     thinking_display = ""
@@ -117,8 +117,9 @@ with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
         elem_classes=["title"]
     )
 
+    mode_label = "🔍 RAG" if vuvu.use_rag else "📝 Legacy"
     gr.Markdown(
-        "錄音或輸入排灣語，AI vuvu 會用排灣語 + 中文回覆你。",
+        f"錄音或輸入排灣語，AI vuvu 會用排灣語 + 中文回覆你。({mode_label})",
         elem_classes=["subtitle"]
     )
 

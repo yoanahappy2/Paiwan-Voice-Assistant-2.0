@@ -1,0 +1,1064 @@
+[
+  {
+    "id": 0,
+    "paiwan": "na tarivak sun?",
+    "chinese": "你好嗎？",
+    "category": "greeting",
+    "source": "paiwan_phrases.txt",
+    "intent": "greeting",
+    "negation_type": null
+  },
+  {
+    "id": 1,
+    "paiwan": "tima su ngadan?",
+    "chinese": "你叫什麼名字？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 2,
+    "paiwan": "tima ngadan na su kama?",
+    "chinese": "你爸爸叫什麼名字？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 3,
+    "paiwan": "tima zua?",
+    "chinese": "那個人是誰？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 4,
+    "paiwan": "tima zua a uqaljay?",
+    "chinese": "那個男人是誰？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 5,
+    "paiwan": "tima zua a vavayan?",
+    "chinese": "那個女人是誰？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 6,
+    "paiwan": "mapida mun a taqumaqanan?",
+    "chinese": "你們家有幾個人？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 7,
+    "paiwan": "mapida su siruvetjek?",
+    "chinese": "你有幾個兄弟姊妹？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 8,
+    "paiwan": "pida anga su cavilj?",
+    "chinese": "你幾歲？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 9,
+    "paiwan": "pida anga cavilj na su kaka a tjaljaljak a vavayan?",
+    "chinese": "你妹妹幾歲？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 10,
+    "paiwan": "pida vatu naicu a kakedrian?",
+    "chinese": "這個小孩有幾隻狗？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 11,
+    "paiwan": "pida su qadupu?",
+    "chinese": "你有幾本書？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 12,
+    "paiwan": "pida milingan tucu?",
+    "chinese": "現在是幾點鐘？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 13,
+    "paiwan": "pida milingan a su sipaceged nu kadjamadjaman?",
+    "chinese": "你早上幾點鐘起床？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 14,
+    "paiwan": "pida milingan a su sikataqed nu qezemezemetj?",
+    "chinese": "你晚上幾點鐘睡覺？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 15,
+    "paiwan": "anema cu?",
+    "chinese": "這是什麼？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "object_query",
+    "negation_type": null
+  },
+  {
+    "id": 16,
+    "paiwan": "anema zua?",
+    "chinese": "那是什麼？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "object_query",
+    "negation_type": null
+  },
+  {
+    "id": 17,
+    "paiwan": "ainu a ku inpic?",
+    "chinese": "我的筆在哪裡？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 18,
+    "paiwan": "inuan a su kama?",
+    "chinese": "你爸爸在哪裡？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 19,
+    "paiwan": "inuan a nu umaq?",
+    "chinese": "你們家在哪裡？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 20,
+    "paiwan": "kemasinu sun?",
+    "chinese": "你從哪裡來的？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 21,
+    "paiwan": "na kemasinu sun tucu?",
+    "chinese": "你今天從哪裡來的？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 22,
+    "paiwan": "uri semainu sun tucu?",
+    "chinese": "你現在要去哪裡？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 23,
+    "paiwan": "kasinu mun katiaw?",
+    "chinese": "你們昨天去哪裡？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 24,
+    "paiwan": "uri mainu sun nutiaw?",
+    "chinese": "你明天要去哪裡？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 25,
+    "paiwan": "sinsi timadju?",
+    "chinese": "他是老師嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 26,
+    "paiwan": "su sinsi timadju?",
+    "chinese": "他是你的老師嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 27,
+    "paiwan": "su sinsi timadju?",
+    "chinese": "她是你的老師嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 28,
+    "paiwan": "padjalim timadju?",
+    "chinese": "那個人很勤勞嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 29,
+    "paiwan": "padjalijm timadju?",
+    "chinese": "那個人很勤勞嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 30,
+    "paiwan": "na tarivak mun.",
+    "chinese": "同學好 (老師說)",
+    "category": "greeting",
+    "source": "paiwan_phrases.txt",
+    "intent": "greeting",
+    "negation_type": null
+  },
+  {
+    "id": 31,
+    "paiwan": "maya gemalju!",
+    "chinese": "別遲到！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 32,
+    "paiwan": "maya piteval!",
+    "chinese": "別浪費！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 33,
+    "paiwan": "ui, na tarivak aken, uta.",
+    "chinese": "我也很好，謝謝你。",
+    "category": "greeting",
+    "source": "paiwan_phrases.txt",
+    "intent": "greeting",
+    "negation_type": null
+  },
+  {
+    "id": 34,
+    "paiwan": "vaikanga aken!",
+    "chinese": "再見了！",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "farewell",
+    "negation_type": null
+  },
+  {
+    "id": 35,
+    "paiwan": "masalu!",
+    "chinese": "謝謝！",
+    "category": "greeting",
+    "source": "paiwan_phrases.txt",
+    "intent": "thanks",
+    "negation_type": null
+  },
+  {
+    "id": 36,
+    "paiwan": "tima sun?",
+    "chinese": "誰呀？(有人在敲門時問)",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 37,
+    "paiwan": "tima zua a kakedrian?",
+    "chinese": "那些小孩是誰？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 38,
+    "paiwan": "mapida su qali?",
+    "chinese": "你有幾個朋友？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 39,
+    "paiwan": "pida anga cavilj na su kama?",
+    "chinese": "你爸爸幾歲？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 40,
+    "paiwan": "pida qadaw nu isiukang?",
+    "chinese": "一個星期有幾天？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 41,
+    "paiwan": "sikamasan pida qadaw tucu ta isiukang?",
+    "chinese": "今天是星期幾？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 42,
+    "paiwan": "nungida sisavavua nimadju?",
+    "chinese": "他甚麼時候要去山上？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "time_query",
+    "negation_type": null
+  },
+  {
+    "id": 43,
+    "paiwan": "anema azua?",
+    "chinese": "那是什麼？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "object_query",
+    "negation_type": null
+  },
+  {
+    "id": 44,
+    "paiwan": "rutjemalupung timadju?",
+    "chinese": "她常常戴帽子嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 45,
+    "paiwan": "padjalim azua timadju?",
+    "chinese": "那個人很勤勞嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 46,
+    "paiwan": "tjengelay timadju tazua qadupu?",
+    "chinese": "她喜歡那本書嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 47,
+    "paiwan": "maya taqed!",
+    "chinese": "別睡覺！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 48,
+    "paiwan": "maya semuqeljev!",
+    "chinese": "別開門！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 49,
+    "paiwan": "maya madraudraw tu sematjumaq a kaiv!",
+    "chinese": "別忘記回來吃晚飯喔！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 50,
+    "paiwan": "ka ljesasaw ti kina, na tjemalupung timadju?",
+    "chinese": "媽媽出去的時候，她戴著帽子嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 51,
+    "paiwan": "ka ljesasaw ti kama, na masiljinay timadju?",
+    "chinese": "爸爸出去的時候，他帶著雨傘嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 52,
+    "paiwan": "ini, vuday azua.",
+    "chinese": "不，那是玉米。",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 53,
+    "paiwan": "ini, kuisang timadju.",
+    "chinese": "不，他是醫生。",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 54,
+    "paiwan": "ini, ku kina timadju.",
+    "chinese": "不，她是我媽媽。",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 55,
+    "paiwan": "ini, inika sinsi timadju.",
+    "chinese": "不，他不是老師。",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 56,
+    "paiwan": "ini, inika ku sinsi timadju.",
+    "chinese": "不，她不是我的老師。",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 57,
+    "paiwan": "ini, inika sadjelung azua qiladjan.",
+    "chinese": "不，那張椅子不重。",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 58,
+    "paiwan": "ini, inika qaca ku kina.",
+    "chinese": "不，我媽媽不高。",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 59,
+    "paiwan": "ini, inika ladruq a ku quvalj.",
+    "chinese": "不，我的頭髮不長。",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 60,
+    "paiwan": "maya kiljavaran!",
+    "chinese": "別說話！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 61,
+    "paiwan": "maya pasuvililj!",
+    "chinese": "別遲到！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 62,
+    "paiwan": "a sinipapungadan tu paiwan a caucau nuaya",
+    "chinese": "排湾族的名称是经过研究而定的",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 63,
+    "paiwan": "sikamasan musalj a kinatjuruvu ta caucau na sekacalisian",
+    "chinese": "原住民族十六族中之第二大族",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 64,
+    "paiwan": "a kinaizuavan nua paiwan a caucau i pasa tjalja navanavaljan ta taiwan",
+    "chinese": "排湾族分布于台湾南端",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 65,
+    "paiwan": "a supu nua paiwan a caucau i taiwan",
+    "chinese": "排湾族在台湾的人口",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 66,
+    "paiwan": "tjara izua tu 15,000 a caucauan i valangaw",
+    "chinese": "台东约有15000人",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 67,
+    "paiwan": "mapavalivalit anga a tja sengesengan",
+    "chinese": "我们的工作方式已经改变",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 68,
+    "paiwan": "a kai nuaya, sika maqati itjen a makakeljakeljang",
+    "chinese": "语言让我们能够互相了解",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 69,
+    "paiwan": "aicu a kai, mavan a sinipadjadjaljudjaljun nua caucau",
+    "chinese": "这个语言是人们传承下来的",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 70,
+    "paiwan": "sikiljavaranan a kai",
+    "chinese": "我们说的语言",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 71,
+    "paiwan": "a i kacedas a sepaiwan",
+    "chinese": "东排湾族",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 72,
+    "paiwan": "vangaw vangaw qemudalj nungida?",
+    "chinese": "天窗呀！何時會下雨呢？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "time_query",
+    "negation_type": null
+  },
+  {
+    "id": 73,
+    "paiwan": "pacunu a sasiq a mangtjengtjez",
+    "chinese": "你看吧！螞蟻正爬進來",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "daily_action",
+    "negation_type": null
+  },
+  {
+    "id": 74,
+    "paiwan": "mangetjez nungida?",
+    "chinese": "何時會來？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "time_query",
+    "negation_type": null
+  },
+  {
+    "id": 75,
+    "paiwan": "kemaljava ti tjuku?",
+    "chinese": "是秋姑在等待？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 76,
+    "paiwan": "kemaljava ta qudalj a kivangavangavang",
+    "chinese": "等著下雨去玩耍",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "daily_action",
+    "negation_type": null
+  },
+  {
+    "id": 77,
+    "paiwan": "qemudjaqudjalj anga",
+    "chinese": "已經在下雨了",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 78,
+    "paiwan": "ari ari kipaqudjalji",
+    "chinese": "走吧！我們一起去淋雨",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 79,
+    "paiwan": "masalu aravac ta tja kiljivak",
+    "chinese": "非常感謝大家的愛",
+    "category": "greeting",
+    "source": "paiwan_phrases.txt",
+    "intent": "thanks",
+    "negation_type": null
+  },
+  {
+    "id": 80,
+    "paiwan": "a nia kama ti vasakalang lja tepiq",
+    "chinese": "我們的父親vasakalang.tepiq",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 81,
+    "paiwan": "izua tu cengceng anga cavilj tu 80 a cavilj",
+    "chinese": "欣然的要歡度80歲的生日",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 82,
+    "paiwan": "imaza a uri tjemumalj sa djemaulj tjanuitjen",
+    "chinese": "我們在此相聚同樂",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 83,
+    "paiwan": "ulja kinisenayan mun nua na qemati",
+    "chinese": "願神祝福您們",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 84,
+    "paiwan": "na seminamalji aravac a vinarungan na payuan",
+    "chinese": "排灣族人的想法非常微妙",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 85,
+    "paiwan": "tjengelay a pakacadja a pakeljang ta vinarungan",
+    "chinese": "想要清楚地表达内心的意思",
+    "category": "question",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 86,
+    "paiwan": "tjakudain! nu tisun a suqelam tjanuaken",
+    "chinese": "我該怎麼做呢我的愛人",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 87,
+    "paiwan": "imaza i niuzilan a qinaljan",
+    "chinese": "在紐西蘭的部落",
+    "category": "culture",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 88,
+    "paiwan": "izua za milimilingan na kacalisian",
+    "chinese": "有一个原住民的传说故事",
+    "category": "culture",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 89,
+    "paiwan": "maqati timadju a masan papamaw a caucau",
+    "chinese": "他能成为半神人",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 90,
+    "paiwan": "a kinaizuavan nua paiwan a caucau i pasa talja navanavaljan ta taiwan",
+    "chinese": "排湾族分布于台湾南端",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 91,
+    "paiwan": "pida matu naicu a kakedrian?",
+    "chinese": "這個小孩有幾隻狗？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 92,
+    "paiwan": "ini, inika ladroq a ku quvalj.",
+    "chinese": "不，我的頭髮不長。",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 93,
+    "paiwan": "a sopu nua paiwan a caucau i taiwan",
+    "chinese": "排湾族在台湾的人口",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 94,
+    "paiwan": "maya kilavaran!",
+    "chinese": "別說話！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 95,
+    "paiwan": "takudain! nu tisun a suqelam tjanuaken",
+    "chinese": "我該怎麼做呢我的愛人",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 96,
+    "paiwan": "vapavalivalit anga a tja sengesengan",
+    "chinese": "我们的工作方式已经改变",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 97,
+    "paiwan": "su sinsi timadu?",
+    "chinese": "她是你的老師嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 98,
+    "paiwan": "pida so qadupu?",
+    "chinese": "你有幾本書？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 99,
+    "paiwan": "imaza a ori tjemumal sa demaulj tjanuitjen",
+    "chinese": "我們在此相聚同樂",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 100,
+    "paiwan": "ka lesasaw ti kama, na masiljinay timadjo?",
+    "chinese": "爸爸出去的時候，他帶著雨傘嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 101,
+    "paiwan": "tengelay a pakacada a pakeljang ta vinarungan",
+    "chinese": "想要清楚地表达内心的意思",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 102,
+    "paiwan": "inoan a su kama?",
+    "chinese": "你爸爸在哪裡？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "location_query",
+    "negation_type": null
+  },
+  {
+    "id": 103,
+    "paiwan": "sinsi timadu?",
+    "chinese": "他是老師嗎？",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 104,
+    "paiwan": "imaza i niuzilan a qinalan",
+    "chinese": "在紐西蘭的部落",
+    "category": "culture",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 105,
+    "paiwan": "ini, inika sadilung azua qiladjan.",
+    "chinese": "不，那張椅子不重。",
+    "category": "negation",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 106,
+    "paiwan": "pida anga cavilj na so kama?",
+    "chinese": "你爸爸幾歲？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 107,
+    "paiwan": "vangetjez nungida?",
+    "chinese": "何時會來？",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "time_query",
+    "negation_type": null
+  },
+  {
+    "id": 108,
+    "paiwan": "maya pitival!",
+    "chinese": "別浪費！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 109,
+    "paiwan": "mapida mon a taqumaqanan?",
+    "chinese": "你們家有幾個人？",
+    "category": "quantity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "quantity_query",
+    "negation_type": null
+  },
+  {
+    "id": 110,
+    "paiwan": "ini, ku kina timadu.",
+    "chinese": "不，她是我媽媽。",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "statement_negation"
+  },
+  {
+    "id": 111,
+    "paiwan": "vasalu aravac ta ta kilivak",
+    "chinese": "非常感謝大家的愛",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "thanks",
+    "negation_type": null
+  },
+  {
+    "id": 112,
+    "paiwan": "maya taqid!",
+    "chinese": "別睡覺！",
+    "category": "prohibition",
+    "source": "paiwan_phrases.txt",
+    "intent": "negation",
+    "negation_type": "instruction_negation"
+  },
+  {
+    "id": 113,
+    "paiwan": "kemalava ta qudalj a kivangavangavang",
+    "chinese": "等著下雨去玩耍",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "daily_action",
+    "negation_type": null
+  },
+  {
+    "id": 114,
+    "paiwan": "qimudaqudjalj anga",
+    "chinese": "已經在下雨了",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  },
+  {
+    "id": 115,
+    "paiwan": "maqati timadu a masan papamaw a caucau",
+    "chinese": "他能成为半神人",
+    "category": "identity_query",
+    "source": "paiwan_phrases.txt",
+    "intent": "identity_query",
+    "negation_type": null
+  },
+  {
+    "id": 116,
+    "paiwan": "anema zoa?",
+    "chinese": "那是什麼？",
+    "category": "query",
+    "source": "paiwan_phrases.txt",
+    "intent": "object_query",
+    "negation_type": null
+  },
+  {
+    "id": 117,
+    "paiwan": "ari ari kipaqodjalji",
+    "chinese": "走吧！我們一起去淋雨",
+    "category": "general",
+    "source": "paiwan_phrases.txt",
+    "intent": "statement",
+    "negation_type": null
+  }
+]

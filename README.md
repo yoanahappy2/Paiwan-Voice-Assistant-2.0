@@ -1,6 +1,20 @@
-# 語聲同行 2.0 — 使用說明
+# 語聲同行 2.0 — 排灣族語 Voice-to-Voice AI 語伴
 
-> 飛書 AI 校園挑戰賽（開放創新賽道）參賽作品
+> 飛書 AI 校園挑戰賽 2026（開放創新賽道）
+>
+> 為瀕危語言建立可互動的學習夥伴，讓每個排灣族孩子都能用母語跟 AI vuvu 對話。
+
+---
+
+## 技術亮點
+
+| 模組 | 技術 | 數據 |
+|------|------|------|
+| ASR 語音辨識 | Whisper-tiny + LoRA 微調 | 81.05% 準確率 |
+| RAG 語意檢索 | 智譜 embedding-3 + FAISS | Top-3 準確率 90% |
+| LLM 對話 | 智譜 GLM-4-Flash | RAG 命中率 100% |
+| 抗幻覺 | Chain-of-Thought | 低信心時自動標注 |
+| 語料規模 | 118 句排灣語 | 東排灣方言 |
 
 ---
 
@@ -115,6 +129,46 @@ git push origin main
 ```
 
 注意：需要開啟 Clash Verge VPN（已設 proxy 為 127.0.0.1:7897）
+
+---
+
+## 目錄結構
+
+```
+paiwan_competition_2026/
+├── app.py                  # Gradio Web Demo（主入口）
+├── llm_service.py          # LLM 對話服務（RAG 版）
+├── rag_service.py          # RAG 檢索服務（embedding + FAISS）
+├── voice_chat.py           # Voice-to-Voice 全鏈路
+├── paiwan_phrases.txt      # 排灣語語料（118 句）
+├── data/                   # RAG 向量索引快取
+│   ├── faiss_index.bin
+│   ├── corpus_metadata.json
+│   └── paiwan_embeddings.npy
+├── api/                    # ASR 後端
+├── feishu_bot/             # 飛書 Bot 原型
+│   ├── bot.py
+│   └── ARCHITECTURE.md
+├── tests/                  # 評測腳本
+│   ├── asr_benchmark.py
+│   └── results/
+├── docs/                   # 技術文件
+│   └── RAG_DESIGN.md
+├── BENCHMARK.md            # 技術評測報告
+├── ROADMAP.md              # 競賽優化路線圖
+└── PROJECT_INFO.md         # 專題說明
+```
+
+---
+
+## 飛書整合計畫
+
+本專案已設計飛書機器人架構，入營後可快速部署：
+
+- **架構**: 飛書 Webhook → Bot 後端 → RAG + LLM → 回覆
+- **原型程式碼**: `feishu_bot/bot.py`
+- **架構設計**: `feishu_bot/ARCHITECTURE.md`
+- **擴展功能**: 每日排灣語推送、互動測驗、語音教學
 
 ---
 
