@@ -145,6 +145,7 @@
 | Embedding | 智譜 embedding-3 | 2048 維 |
 | 向量庫 | FAISS | IndexFlatL2 |
 | LLM | 智譜 GLM-4-Flash | — |
+| TTS | macOS Grandma 語音 | 離線，角色匹配 |
 | Web | Gradio | 4.0+ |
 | 後端 | FastAPI | 0.104+ |
 | 語料 | 118 句排灣語 | 東排灣方言 |
