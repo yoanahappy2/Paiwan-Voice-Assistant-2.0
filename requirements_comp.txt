@@ -23,3 +23,11 @@ gradio>=4.0.0
 
 # === 工具 === #
 python-dotenv>=1.0.0   # 環境變數管理
+
+# === RAG === #
+faiss-cpu>=1.7.0     # 向量檢索
+numpy>=1.24.0        # 數值計算
+
+# === TTS === #
+edge-tts>=6.0.0      # 微軟 TTS（備選）
+gTTS>=2.4.0          # Google TTS（備選）

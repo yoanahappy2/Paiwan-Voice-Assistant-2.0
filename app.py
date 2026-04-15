@@ -1,22 +1,22 @@
 """
 app.py
-語聲同行 競賽版 — Gradio Web Demo
+語聲同行 2.0 — Gradio Web Demo（RAG + TTS 版）
 
-語音對話介面: 錄音 → ASR → LLM → 文字回覆
+語音對話介面: 錄音 → ASR → RAG 檢索 → LLM → 文字 + 語音回覆
 
-作者: Backend_Dev (OpenClaw Agent)
+作者: Backend_Dev
 日期: 2026-04-15
-用途: 飛書 AI 校園挑戰賽 — Phase 3 Web 介面
+用途: 飛書 AI 校園挑戰賽 — Web 介面
 """
 
 import gradio as gr
 from llm_service import VuvuService
+from tts_service import synthesize
 
 # ============================================
 # 全域 vuvu 實例（保持對話上下文）
 # ============================================
 
-# RAG 模式啟用（智譜 embedding-3 + FAISS）
 vuvu = VuvuService(use_rag=True)
 
 
@@ -25,17 +25,16 @@ vuvu = VuvuService(use_rag=True)
 # ============================================
 
 def process_audio(audio_path):
-    """
-    處理錄音: ASR → LLM → 回覆
-    """
+    """處理錄音: ASR → RAG → LLM → 文字 + 語音回覆"""
     if audio_path is None:
-        return "", "", "請先錄音或上傳音檔，vuvu 在等你說話呢！"
+        return "", "", None, "請先錄音或上傳音檔，vuvu 在等你說話呢！"
 
     # Step 1: ASR
+    from voice_chat import recognize_audio
     asr_result = recognize_audio(audio_path)
 
     if asr_result.get("error"):
-        return "", "", f"❌ ASR 錯誤: {asr_result['error']}"
+        return "", "", None, f"❌ ASR 錯誤: {asr_result['error']}"
 
     recognized = asr_result.get("text", "")
     confidence = asr_result.get("confidence", 0.0)
@@ -43,9 +42,9 @@ def process_audio(audio_path):
     logic = asr_result.get("logic", "")
 
     if not recognized:
-        return "", "", "🔇 辨識結果為空，請再錄一次試試！"
+        return "", "", None, "🔇 辨識結果為空，請再錄一次試試！"
 
-    # 組合辨識資訊
+    # ASR 資訊展示
     display_parts = [f"🎤 你說的排灣語: **{recognized}**"]
     if raw_text and raw_text != recognized:
         display_parts.append(f"📝 原始辨識: {raw_text}")
@@ -55,39 +54,49 @@ def process_audio(audio_path):
 
     recognized_display = "\n".join(display_parts)
 
-    # Step 2: LLM + RAG（含思考過程）
+    # Step 2: LLM + RAG
     llm_result = vuvu.chat_with_thinking(recognized)
+    reply = llm_result["reply"]
 
+    # Step 3: TTS 語音合成
+    audio_path_out = synthesize(reply, engine="macos")
+
+    # 思考過程
     thinking_display = ""
     if llm_result.get("thinking"):
         thinking_display = f"🧠 **vuvu 的思考:**\n{llm_result['thinking']}"
 
-    return recognized_display, thinking_display, llm_result["reply"]
+    return recognized_display, thinking_display, audio_path_out, reply
 
 
 def process_text(text):
-    """純文字對話（備用模式）"""
+    """純文字對話: RAG → LLM → 文字 + 語音回覆"""
     if not text.strip():
-        return "", "", "請輸入文字跟 vuvu 聊天！"
+        return "", "", None, "請輸入文字跟 vuvu 聊天！"
 
     llm_result = vuvu.chat_with_thinking(text.strip())
+    reply = llm_result["reply"]
+
+    # TTS
+    audio_path_out = synthesize(reply, engine="macos")
+
     thinking_display = ""
     if llm_result.get("thinking"):
         thinking_display = f"🧠 **vuvu 的思考:**\n{llm_result['thinking']}"
-    return "", thinking_display, llm_result["reply"]
+
+    return "", thinking_display, audio_path_out, reply
 
 
 def reset_chat():
     """重置對話"""
     vuvu.reset()
-    return "", "", "", "✅ 對話已重置，vuvu 重新開始了！"
+    return "", "", None, "", "✅ 對話已重置，vuvu 重新開始了！"
 
 
 # ============================================
 # Gradio 介面
 # ============================================
 
-# 預設場景按鈕
 SCENARIOS = [
     ("🏠 問候", "tjanu en"),
     ("🙏 謝謝", "masalu"),
@@ -98,30 +107,20 @@ SCENARIOS = [
 ]
 
 
-def load_scenario(btn_text):
-    """載入預設場景"""
-    # btn_text 格式: "🏠 問候" → 取得對應文字
-    for label, text in SCENARIOS:
-        if label in btn_text or btn_text in label:
-            return text
-    return ""
-
-
-with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
+with gr.Blocks(
+    title="語聲同行 2.0 — 排灣族語 AI 語伴",
+    theme=gr.themes.Soft()
+) as demo:
 
     gr.Markdown(
         """
-        # 🌾 語聲同行 — 排灣族語 AI 語伴
+        # 🌾 語聲同行 2.0 — 排灣族語 AI 語伴
         ### 跟 vuvu Maliq 用排灣語聊天吧！
-        """,
-        elem_classes=["title"]
+        """
     )
 
-    mode_label = "🔍 RAG" if vuvu.use_rag else "📝 Legacy"
-    gr.Markdown(
-        f"錄音或輸入排灣語，AI vuvu 會用排灣語 + 中文回覆你。({mode_label})",
-        elem_classes=["subtitle"]
-    )
+    mode_label = "🔍 RAG + 🔊 TTS" if vuvu.use_rag else "📝 Legacy"
+    gr.Markdown(f"錄音或輸入排灣語，AI vuvu 會用排灣語 + 中文回覆你。({mode_label})")
 
     with gr.Row():
         with gr.Column(scale=1):
@@ -130,21 +129,20 @@ with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
                 sources=["microphone", "upload"],
                 type="filepath",
                 label="🎤 錄音或上傳音檔",
-                show_label=True,
             )
 
-            gr.Markdown("**⚡ 快速場景（點擊自動填入）:**")
+            gr.Markdown("**⚡ 快速場景:**")
             with gr.Row():
                 scenario_btns = []
-                for i, (label, _) in enumerate(SCENARIOS[:3]):
+                for label, _ in SCENARIOS[:3]:
                     btn = gr.Button(label, size="sm")
                     scenario_btns.append(btn)
             with gr.Row():
-                for i, (label, _) in enumerate(SCENARIOS[3:]):
+                for label, _ in SCENARIOS[3:]:
                     btn = gr.Button(label, size="sm")
                     scenario_btns.append(btn)
 
-            # 文字輸入（備用）
+            # 文字輸入
             text_input = gr.Textbox(
                 label="⌨️ 或直接輸入文字",
                 placeholder="輸入排灣語或中文...",
@@ -166,9 +164,14 @@ with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
             thinking_output = gr.Markdown(
                 label="🧠 vuvu 的思考過程",
                 value="",
-                visible=True,
             )
-            # vuvu 回覆
+            # vuvu 語音回覆
+            tts_output = gr.Audio(
+                label="🔊 vuvu 的聲音",
+                type="filepath",
+                autoplay=True,
+            )
+            # vuvu 文字回覆
             reply_output = gr.Markdown(
                 label="👵 vuvu Maliq 的回覆",
                 value="ai~~ 孫子孫女，跟 vuvu 說話吧！",
@@ -178,24 +181,13 @@ with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
     # 事件綁定
     # ============================================
 
-    # 語音送出
-    submit_audio.click(
-        fn=process_audio,
-        inputs=[audio_input],
-        outputs=[recognized_output, thinking_output, reply_output],
-    )
+    output_fields = [recognized_output, thinking_output, tts_output, reply_output]
 
-    # 文字送出
-    submit_text.click(
-        fn=process_text,
-        inputs=[text_input],
-        outputs=[recognized_output, thinking_output, reply_output],
-    )
-
-    # 重置
+    submit_audio.click(fn=process_audio, inputs=[audio_input], outputs=output_fields)
+    submit_text.click(fn=process_text, inputs=[text_input], outputs=output_fields)
     reset_btn.click(
         fn=reset_chat,
-        outputs=[audio_input, text_input, thinking_output, reply_output],
+        outputs=[audio_input, text_input, thinking_output, tts_output, reply_output],
     )
 
     # 場景按鈕
@@ -203,7 +195,7 @@ with gr.Blocks(title="語聲同行 — 排灣族語 AI 語伴") as demo:
         btn.click(
             fn=lambda t=text: process_text(t),
             inputs=[],
-            outputs=[recognized_output, thinking_output, reply_output],
+            outputs=output_fields,
         )
 
 
@@ -215,5 +207,5 @@ if __name__ == "__main__":
     demo.launch(
         server_name="0.0.0.0",
         server_port=7860,
-        share=False,  # 本地測試用；錄 Demo 時改 True
+        share=False,
     )
