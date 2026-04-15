@@ -44,6 +44,9 @@ echo "[Step 1] 📦 安裝依賴 (約 3-5 分鐘)"
 
 pip install --upgrade pip --quiet
 
+# HuggingFace 鏡像（中國大陸加速）
+export HF_ENDPOINT=https://hf-mirror.com
+
 # PyTorch with CUDA
 pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121 --quiet 2>/dev/null || \
 pip install torch torchaudio --quiet

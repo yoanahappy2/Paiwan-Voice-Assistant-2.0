@@ -16,6 +16,7 @@ train_paiwan.py — 排灣語 XTTS v2 微調訓練腳本（穩定版）
 
 import os
 os.environ["COQUI_TOS_AGREED"] = "1"
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
 import sys
 import json

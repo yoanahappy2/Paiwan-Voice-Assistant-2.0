@@ -41,10 +41,13 @@ class PhonemeEngine:
         'vangetjez': 'mangetjez',
     }
     
+    # 注意：tj, lj, dj 是排灣語的正確字母，不應自動替換
+    # 音韻規則只在特定比對場景使用，不用於通用校正
     PHONETIC_RULES = {
-        'tj→t': ('tj', 't'),
-        'lj→l': ('lj', 'l'),
-        'dj→d': ('dj', 'd'),
+        # 暫時禁用，因為會傷害正確的排灣語
+        # 'tj→t': ('tj', 't'),
+        # 'lj→l': ('lj', 'l'),
+        # 'dj→d': ('dj', 'd'),
     }
     
     M_V_SWAPS = {'m': 'v', 'v': 'm'}

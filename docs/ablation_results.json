@@ -1,0 +1,176 @@
+{
+  "E1": {
+    "total": 12,
+    "corrected_to_target": 4,
+    "already_correct": 8,
+    "still_wrong": 0,
+    "details": [
+      {
+        "input": "masalu",
+        "target": "masalu",
+        "error_type": "正確輸入",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [],
+        "corrected_text": "masalu"
+      },
+      {
+        "input": "vasalu",
+        "target": "masalu",
+        "error_type": "m/v 混淆",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [
+          "vasalu → masalu"
+        ],
+        "corrected_text": "masalu"
+      },
+      {
+        "input": "sima",
+        "target": "siva",
+        "error_type": "常見辨識錯誤",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [
+          "sima → siva"
+        ],
+        "corrected_text": "siva"
+      },
+      {
+        "input": "drusa",
+        "target": "drusa",
+        "error_type": "正確輸入",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [],
+        "corrected_text": "drusa"
+      },
+      {
+        "input": "tima su ngadan",
+        "target": "tima su ngadan",
+        "error_type": "正確輸入",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [],
+        "corrected_text": "tima su ngadan"
+      },
+      {
+        "input": "uri semainu sun tucu",
+        "target": "uri semainu sun tucu",
+        "error_type": "正確輸入",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [],
+        "corrected_text": "uri semainu sun tucu"
+      },
+      {
+        "input": "maya kiljavaran",
+        "target": "maya kiljavaran",
+        "error_type": "正確輸入",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [],
+        "corrected_text": "maya kiljavaran"
+      },
+      {
+        "input": "na tarivak sun",
+        "target": "na tarivak sun",
+        "error_type": "正確輸入",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [],
+        "corrected_text": "na tarivak sun"
+      },
+      {
+        "input": "pida anga su cavilj",
+        "target": "pida anga su cavilj",
+        "error_type": "正確輸入",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [],
+        "corrected_text": "pida anga su cavilj"
+      },
+      {
+        "input": "inika sinsi timadju",
+        "target": "inika sinsi timadju",
+        "error_type": "正確輸入",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [],
+        "corrected_text": "inika sinsi timadju"
+      },
+      {
+        "input": "basalu aravac",
+        "target": "masalu aravac",
+        "error_type": "m/v 混淆 + 句子",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [
+          "basalu → masalu"
+        ],
+        "corrected_text": "masalu aravac"
+      },
+      {
+        "input": "vasalu aravac",
+        "target": "masalu aravac",
+        "error_type": "m/v 混淆 + 句子",
+        "score": 100,
+        "exact_match": true,
+        "corrections": [
+          "vasalu → masalu"
+        ],
+        "corrected_text": "masalu aravac"
+      }
+    ]
+  },
+  "E2": {
+    "total": 42,
+    "perfect_self_match": 42,
+    "affix_detected": 22,
+    "intent_classified": 40,
+    "categories": {
+      "unknown": 42
+    }
+  },
+  "E3": {
+    "0": {
+      "avg_score": 100.0,
+      "min": 100,
+      "max": 100
+    },
+    "1": {
+      "avg_score": 96.2,
+      "min": 88,
+      "max": 100
+    },
+    "2": {
+      "avg_score": 94.5,
+      "min": 88,
+      "max": 100
+    },
+    "3": {
+      "avg_score": 90.0,
+      "min": 75,
+      "max": 100
+    }
+  },
+  "summary": {
+    "E1_音韻校正": {
+      "測試案例數": 12,
+      "校正成功": 4,
+      "校正成功率": "100.0%"
+    },
+    "E2_語料完整性": {
+      "語料總數": 42,
+      "自比對100分率": "100.0%",
+      "綴詞偵測率": "52.4%",
+      "意圖分類率": "95.2%"
+    },
+    "E3_噪音容忍": {
+      "噪音0_無干擾": "100.0%",
+      "噪音1_輕微": "96.2%",
+      "噪音2_中度": "94.5%",
+      "噪音3_嚴重": "90.0%"
+    }
+  }
+}
