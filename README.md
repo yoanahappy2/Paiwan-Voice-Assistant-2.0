@@ -103,7 +103,7 @@
 
 ---
 
-## 專案結構
+## 📂 專案結構
 
 ```
 paiwan_competition_2026/
@@ -119,12 +119,22 @@ paiwan_competition_2026/
 │   ├── ablation_study.py           # 消融實驗腳本
 │   └── generate_charts.py          # 圖表生成
 ├── docs/
+│   ├── FRAMEWORK_METHODOLOGY.md    # 📄 技術框架文件（方法論）
 │   ├── ablation_results.json       # 實驗數據
-│   └── charts/                     # 可視化圖表
-├── FRAMEWORK_METHODOLOGY.md        # 技術框架文件（方法論）
+│   └── charts/                     # 📊 可視化圖表（4 張）
+├── FRAMEWORK_METHODOLOGY.md        # 技術框架文件（根目錄副本）
 ├── cloud_train/                    # 清華算力平台訓練腳本
 └── README.md                       # 本文件
 ```
+
+### 📄 核心文件導引
+
+| 文件 | 說明 |
+|------|------|
+| [FRAMEWORK_METHODOLOGY.md](docs/FRAMEWORK_METHODOLOGY.md) | 技術框架文件：研究問題 + 5 階段管線 + 方法論 |
+| [docs/charts/](docs/charts/) | 消融實驗圖表：ASR 對比 / 校正效果 / 噪音容忍 / 系統總覽 |
+| [docs/ablation_results.json](docs/ablation_results.json) | 完整實驗數據 |
+| [paiwan_tts/](paiwan_tts/) | XTTS v2 生成的排灣語語音檔 |
 
 ---
 
