@@ -1,211 +1,384 @@
 """
 app.py
-語聲同行 2.0 — Gradio Web Demo（RAG + TTS 版）
+語聲同行 2.0 — 排灣語智能教學系統
 
-語音對話介面: 錄音 → ASR → RAG 檢索 → LLM → 文字 + 語音回覆
+定位：排灣語教學工具（不是聊天機器人）
+
+核心功能：
+1. 發音評測：學習者說排灣語 → ASR → 音韻比對 → 評分 + 分析
+2. 語法解釋：點擊任意句子 → 詞彙拆解 + 語法分析 + 學習建議
+3. 綴詞結構可視化：展示排灣語黏著語的綴詞體系
+4. 測驗系統：基於語料庫的選擇題測驗
 
 作者: Backend_Dev
 日期: 2026-04-15
-用途: 飛書 AI 校園挑戰賽 — Web 介面
 """
 
+import json
 import gradio as gr
-from llm_service import VuvuService
-from tts_service import synthesize
+from pathlib import Path
+
+# 載入模組
+from modules.asr_evaluator import (
+    PhonemeEngine, AffixAnalyzer, IntentClassifier,
+    evaluate_pronunciation, evaluate_text,
+)
+from modules.grammar_explainer import explain_sentence, generate_quiz, explain_affix
 
 # ============================================
-# 全域 vuvu 實例（保持對話上下文）
+# 載入語料庫
 # ============================================
 
-vuvu = VuvuService(use_rag=True)
+CORPUS_PATH = Path(__file__).parent / "modules" / "paiwan_corpus.json"
+with open(CORPUS_PATH, "r", encoding="utf-8") as f:
+    CORPUS = json.load(f)
+
+# 展平語料供檢索
+ALL_SENTENCES = []
+for cat_id, cat in CORPUS["categories"].items():
+    for s in cat["sentences"]:
+        s["category_id"] = cat_id
+        s["category_name"] = cat["name"]
+        ALL_SENTENCES.append(s)
 
 
 # ============================================
-# 核心處理函式
+# Tab 1: 發音評測
 # ============================================
 
-def process_audio(audio_path):
-    """處理錄音: ASR → RAG → LLM → 文字 + 語音回覆"""
-    if audio_path is None:
-        return "", "", None, "請先錄音或上傳音檔，vuvu 在等你說話呢！"
+def do_pronunciation_eval(audio_path, sentence_idx):
+    """發音評測"""
+    if sentence_idx is None or sentence_idx >= len(ALL_SENTENCES):
+        return "請先選擇一個句子", "", ""
+    
+    target = ALL_SENTENCES[sentence_idx]
+    
+    if audio_path:
+        result = evaluate_pronunciation(
+            audio_path, target["paiwan"], target["chinese"]
+        )
+    else:
+        return "請先錄音", "", ""
+    
+    if result.error:
+        return f"❌ {result.error}", "", ""
+    
+    # 評測報告
+    grade_emoji = {"Perfect": "🌟", "Excellent": "⭐", "Good": "✅", "Fair": "🤔", "Try Again": "❌"}
+    emoji = grade_emoji.get(result.grade, "")
+    
+    report = f"""## {emoji} 發音評測結果
 
-    # Step 1: ASR
-    from voice_chat import recognize_audio
-    asr_result = recognize_audio(audio_path)
+**目標句子**: {target['paiwan']}（{target['chinese']}）
+**你說的**: {result.recognized_text}
+**分數**: **{result.score}/100**（{result.grade}）
 
-    if asr_result.get("error"):
-        return "", "", None, f"❌ ASR 錯誤: {asr_result['error']}"
-
-    recognized = asr_result.get("text", "")
-    confidence = asr_result.get("confidence", 0.0)
-    raw_text = asr_result.get("raw_text", "")
-    logic = asr_result.get("logic", "")
-
-    if not recognized:
-        return "", "", None, "🔇 辨識結果為空，請再錄一次試試！"
-
-    # ASR 資訊展示
-    display_parts = [f"🎤 你說的排灣語: **{recognized}**"]
-    if raw_text and raw_text != recognized:
-        display_parts.append(f"📝 原始辨識: {raw_text}")
-    if logic:
-        display_parts.append(f"🔧 校正: {logic}")
-    display_parts.append(f"📊 信心度: {confidence:.0%}")
-
-    recognized_display = "\n".join(display_parts)
-
-    # Step 2: LLM + RAG
-    llm_result = vuvu.chat_with_thinking(recognized)
-    reply = llm_result["reply"]
-
-    # Step 3: TTS 語音合成
-    audio_path_out = synthesize(reply, engine="macos")
-
-    # 思考過程
-    thinking_display = ""
-    if llm_result.get("thinking"):
-        thinking_display = f"🧠 **vuvu 的思考:**\n{llm_result['thinking']}"
-
-    return recognized_display, thinking_display, audio_path_out, reply
-
-
-def process_text(text):
-    """純文字對話: RAG → LLM → 文字 + 語音回覆"""
-    if not text.strip():
-        return "", "", None, "請輸入文字跟 vuvu 聊天！"
-
-    llm_result = vuvu.chat_with_thinking(text.strip())
-    reply = llm_result["reply"]
-
-    # TTS
-    audio_path_out = synthesize(reply, engine="macos")
-
-    thinking_display = ""
-    if llm_result.get("thinking"):
-        thinking_display = f"🧠 **vuvu 的思考:**\n{llm_result['thinking']}"
-
-    return "", thinking_display, audio_path_out, reply
+### 音韻分析
+- 音韻相似度: {result.similarity:.1%}
+- Levenshtein 距離: {result.levenshtein_distance if hasattr(result, 'levenshtein_distance') else 'N/A'}
+- 精確匹配: {'✅ 是' if result.exact_match else '❌ 否'}
+"""
+    if result.corrections:
+        report += f"- 校正規則: {', '.join(result.corrections)}\n"
+    
+    # 綴詞分析
+    affix_text = format_affix_analysis(result.affix_analysis)
+    
+    # 意圖
+    intent_text = ""
+    if result.intent and result.intent["intent"] != "unknown":
+        intent_text = f"**意圖類別**: {result.intent['intent']}（置信度 {result.intent['confidence']:.0%}）"
+    
+    return report, affix_text, intent_text
 
 
-def reset_chat():
-    """重置對話"""
-    vuvu.reset()
-    return "", "", None, "", "✅ 對話已重置，vuvu 重新開始了！"
+def format_affix_analysis(analysis: dict) -> str:
+    if not analysis or not analysis.get("affixes_found"):
+        return "此句為基礎句型，無明顯綴詞標記。"
+    
+    lines = ["### 綴詞結構分析\n"]
+    for affix in analysis["affixes_found"]:
+        lines.append(f"- **前綴「{affix['prefix']}」**: {affix['label']} — {affix['description']}")
+    lines.append(f"\n{analysis['structure_description']}")
+    return "\n".join(lines)
+
+
+# ============================================
+# Tab 2: 語法解釋
+# ============================================
+
+def do_grammar_explain(sentence_idx):
+    """語法解釋"""
+    if sentence_idx is None or sentence_idx >= len(ALL_SENTENCES):
+        return "請先選擇一個句子"
+    
+    target = ALL_SENTENCES[sentence_idx]
+    result = explain_sentence(
+        target["paiwan"], target["chinese"], target.get("grammar_note", "")
+    )
+    
+    if not result["success"]:
+        return f"解釋生成失敗，請重試。\n\n**原句**: {target['paiwan']} = {target['chinese']}\n**語法提示**: {target.get('grammar_note', '無')}"
+    
+    data = result["data"]
+    
+    output = f"""## 語法解析：{target['paiwan']}
+**翻譯**: {target['chinese']}
+
+### 詞彙拆解
+"""
+    for w in data.get("word_breakdown", []):
+        output += f"- **{w['word']}** ({w['type']}) — {w['meaning']}\n"
+    
+    output += f"""
+### 語法說明
+{data.get('grammar_explanation', '')}
+
+### 學習建議
+💡 {data.get('learning_tip', '')}
+
+### 舉一反三
+{data.get('related_pattern', '')}
+"""
+    
+    if target.get("grammar_note"):
+        output += f"\n### 語料庫註解\n> {target['grammar_note']}"
+    
+    return output
+
+
+# ============================================
+# Tab 3: 語料庫瀏覽
+# ============================================
+
+def build_corpus_display():
+    """生成語料庫瀏覽內容"""
+    lines = ["# 📖 排灣語語料庫\n"]
+    
+    for cat_id, cat in CORPUS["categories"].items():
+        lines.append(f"## {cat['icon']} {cat['name']}\n")
+        lines.append(f"*{cat['description']}*\n")
+        lines.append("| 排灣語 | 中文 | 語法註解 |")
+        lines.append("|--------|------|----------|")
+        for s in cat["sentences"]:
+            note = s.get("grammar_note", "")[:30] + "..." if len(s.get("grammar_note", "")) > 30 else s.get("grammar_note", "")
+            lines.append(f"| {s['paiwan']} | {s['chinese']} | {note} |")
+        lines.append("")
+    
+    # 綴詞體系
+    lines.append("---\n## 🔧 排灣語綴詞體系\n")
+    for section_name, section in CORPUS["grammar_guide"].items():
+        lines.append(f"### {section['title']}\n")
+        lines.append("| 排灣語 | 中文 | 說明 |")
+        lines.append("|--------|------|------|")
+        for entry in section["entries"]:
+            p = entry.get("paiwan", entry.get("marker", ""))
+            c = entry.get("chinese", entry.get("label", ""))
+            n = entry.get("note", entry.get("description", entry.get("example", "")))
+            lines.append(f"| {p} | {c} | {n} |")
+        lines.append("")
+    
+    return "\n".join(lines)
+
+
+# ============================================
+# Tab 4: 測驗
+# ============================================
+
+current_quiz = {"questions": [], "answers": []}
+
+def do_generate_quiz(category_name):
+    """生成測驗題"""
+    # 找到對應類別
+    cat = None
+    for cat_id, c in CORPUS["categories"].items():
+        if c["name"] == category_name:
+            cat = c
+            break
+    
+    if not cat:
+        return "找不到此類別", ""
+    
+    result = generate_quiz(cat["name"], cat["sentences"])
+    
+    if not result["success"]:
+        return f"測驗生成失敗: {result.get('error', '未知錯誤')}", ""
+    
+    quiz = result["data"].get("quiz", [])
+    current_quiz["questions"] = quiz
+    current_quiz["answers"] = [q["answer"] for q in quiz]
+    
+    output = f"## 📝 {category_name} 測驗\n\n"
+    for i, q in enumerate(quiz):
+        output += f"**第 {i+1} 題**: {q['question']}\n\n"
+        for j, opt in enumerate(q["options"]):
+            output += f"- {chr(65+j)}. {opt}\n"
+        output += "\n"
+    
+    output += "---\n*回答後點擊「查看答案」*\n"
+    return output, ""
+
+
+def do_check_answers(answer_text):
+    """檢查答案"""
+    if not current_quiz["questions"]:
+        return "請先生成測驗題"
+    
+    output = "## 📊 測驗結果\n\n"
+    try:
+        user_answers = [int(a.strip()) for a in answer_text.split(",")]
+    except:
+        return "請用逗號分隔答案編號，例如：0,2,1（從 0 開始）"
+    
+    correct = 0
+    for i, q in enumerate(current_quiz["questions"]):
+        ans = current_quiz["answers"][i]
+        user_ans = user_answers[i] if i < len(user_answers) else -1
+        is_correct = user_ans == ans
+        
+        if is_correct:
+            correct += 1
+        
+        emoji = "✅" if is_correct else "❌"
+        output += f"{emoji} 第 {i+1} 題: {q['question']}\n"
+        output += f"   正確答案: {chr(65+ans)}. {q['options'][ans]}\n"
+        if not is_correct and i < len(user_answers):
+            output += f"   你的答案: {chr(65+user_ans)}. {q['options'][user_ans]}\n"
+        output += f"   💡 {q['explanation']}\n\n"
+    
+    output += f"**得分**: {correct}/{len(current_quiz['questions'])}"
+    return output
 
 
 # ============================================
 # Gradio 介面
 # ============================================
 
-SCENARIOS = [
-    ("🏠 問候", "tjanu en"),
-    ("🙏 謝謝", "masalu"),
-    ("👍 好", "nanguaq"),
-    ("👋 再見", "pacunan"),
-    ("📖 說故事", "vuvu，可以講一個排灣族的故事嗎？"),
-    ("📚 學單字", "vuvu，教我一些排灣語的日常用語"),
-]
-
-
 with gr.Blocks(
-    title="語聲同行 2.0 — 排灣族語 AI 語伴",
-    theme=gr.themes.Soft()
+    title="語聲同行 2.0 — 排灣語智能教學系統",
 ) as demo:
-
-    gr.Markdown(
-        """
-        # 🌾 語聲同行 2.0 — 排灣族語 AI 語伴
-        ### 跟 vuvu Maliq 用排灣語聊天吧！
-        """
-    )
-
-    mode_label = "🔍 RAG + 🔊 TTS" if vuvu.use_rag else "📝 Legacy"
-    gr.Markdown(f"錄音或輸入排灣語，AI vuvu 會用排灣語 + 中文回覆你。({mode_label})")
-
-    with gr.Row():
-        with gr.Column(scale=1):
-            # 語音輸入
-            audio_input = gr.Audio(
-                sources=["microphone", "upload"],
-                type="filepath",
-                label="🎤 錄音或上傳音檔",
+    
+    gr.Markdown("""
+    # 🌾 語聲同行 2.0 — 排灣語智能教學系統
+    ### 低資源語言的 AI 輔助教學框架
+    
+    *ASR 微調 + 音韻規則引擎 + 綴詞結構分析 + 語法解釋*
+    """)
+    
+    # 句子選擇器（全域）
+    sentence_choices = [
+        f"{s['paiwan']}（{s['chinese']}）" for s in ALL_SENTENCES
+    ]
+    
+    # ==========================================
+    # Tab 1: 發音評測
+    # ==========================================
+    with gr.Tab("🎤 發音評測"):
+        gr.Markdown("""
+        ### 發音評測系統
+        選擇一個排灣語句子，錄下你的發音，系統會：
+        1. ASR 辨識你說的排灣語（Whisper-tiny + LoRA 微調）
+        2. 音韻規則校正（處理 tj/t、m/v 等排灣語特有音變）
+        3. 計算發音分數（Levenshtein 距離 + 音韻相似度）
+        4. 分析綴詞結構
+        """)
+        
+        with gr.Row():
+            with gr.Column(scale=1):
+                eval_sentence = gr.Dropdown(
+                    choices=sentence_choices,
+                    label="選擇要練習的句子",
+                    type="index",
+                )
+                eval_audio = gr.Audio(
+                    sources=["microphone", "upload"],
+                    type="filepath",
+                    label="🎤 錄下你的發音",
+                )
+                eval_btn = gr.Button("📊 開始評測", variant="primary")
+            
+            with gr.Column(scale=1):
+                eval_result = gr.Markdown(label="評測結果")
+                eval_affix = gr.Markdown(label="綴詞分析")
+                eval_intent = gr.Markdown(label="意圖分類")
+        
+        eval_btn.click(
+            fn=do_pronunciation_eval,
+            inputs=[eval_audio, eval_sentence],
+            outputs=[eval_result, eval_affix, eval_intent],
+        )
+    
+    # ==========================================
+    # Tab 2: 語法解釋
+    # ==========================================
+    with gr.Tab("📖 語法解釋"):
+        gr.Markdown("""
+        ### 語法結構解析
+        選擇一個句子，系統會分析：
+        - 詞彙拆解（每個詞的意思和詞性）
+        - 語法結構（句型分析）
+        - 學習建議（記憶技巧）
+        - 舉一反三（類似句型）
+        """)
+        
+        with gr.Row():
+            with gr.Column(scale=1):
+                grammar_sentence = gr.Dropdown(
+                    choices=sentence_choices,
+                    label="選擇要學習的句子",
+                    type="index",
+                )
+                grammar_btn = gr.Button("🔍 分析語法", variant="primary")
+            
+            with gr.Column(scale=2):
+                grammar_result = gr.Markdown()
+        
+        grammar_btn.click(
+            fn=do_grammar_explain,
+            inputs=[grammar_sentence],
+            outputs=[grammar_result],
+        )
+    
+    # ==========================================
+    # Tab 3: 語料庫
+    # ==========================================
+    with gr.Tab("📚 語料庫瀏覽"):
+        gr.Markdown(build_corpus_display())
+    
+    # ==========================================
+    # Tab 4: 測驗
+    # ==========================================
+    with gr.Tab("📝 測驗"):
+        gr.Markdown("### 排灣語測驗\n選擇類別，生成測驗題，測試你的學習成果。")
+        
+        with gr.Row():
+            cat_choices = [cat["name"] for cat in CORPUS["categories"].values()]
+            quiz_cat = gr.Dropdown(choices=cat_choices, label="選擇測驗類別")
+            quiz_gen_btn = gr.Button("🎲 生成測驗", variant="primary")
+        
+        quiz_display = gr.Markdown()
+        
+        with gr.Row():
+            quiz_answer = gr.Textbox(
+                label="你的答案（填入題號，用逗號分隔。例如：0,2,1）",
+                placeholder="0,2,1",
+                lines=1,
             )
-
-            gr.Markdown("**⚡ 快速場景:**")
-            with gr.Row():
-                scenario_btns = []
-                for label, _ in SCENARIOS[:3]:
-                    btn = gr.Button(label, size="sm")
-                    scenario_btns.append(btn)
-            with gr.Row():
-                for label, _ in SCENARIOS[3:]:
-                    btn = gr.Button(label, size="sm")
-                    scenario_btns.append(btn)
-
-            # 文字輸入
-            text_input = gr.Textbox(
-                label="⌨️ 或直接輸入文字",
-                placeholder="輸入排灣語或中文...",
-                lines=2,
-            )
-
-            with gr.Row():
-                submit_audio = gr.Button("🎙️ 送出語音", variant="primary")
-                submit_text = gr.Button("📝 送出文字")
-                reset_btn = gr.Button("🔄 重置對話")
-
-        with gr.Column(scale=1):
-            # ASR 結果
-            recognized_output = gr.Markdown(
-                label="🎤 辨識結果",
-                value="等待輸入...",
-            )
-            # vuvu 思考過程
-            thinking_output = gr.Markdown(
-                label="🧠 vuvu 的思考過程",
-                value="",
-            )
-            # vuvu 語音回覆
-            tts_output = gr.Audio(
-                label="🔊 vuvu 的聲音",
-                type="filepath",
-                autoplay=True,
-            )
-            # vuvu 文字回覆
-            reply_output = gr.Markdown(
-                label="👵 vuvu Maliq 的回覆",
-                value="ai~~ 孫子孫女，跟 vuvu 說話吧！",
-            )
-
-    # ============================================
-    # 事件綁定
-    # ============================================
-
-    output_fields = [recognized_output, thinking_output, tts_output, reply_output]
-
-    submit_audio.click(fn=process_audio, inputs=[audio_input], outputs=output_fields)
-    submit_text.click(fn=process_text, inputs=[text_input], outputs=output_fields)
-    reset_btn.click(
-        fn=reset_chat,
-        outputs=[audio_input, text_input, thinking_output, tts_output, reply_output],
-    )
-
-    # 場景按鈕
-    for btn, (label, text) in zip(scenario_btns, SCENARIOS):
-        btn.click(
-            fn=lambda t=text: process_text(t),
-            inputs=[],
-            outputs=output_fields,
+            quiz_check_btn = gr.Button("✅ 查看答案")
+        
+        quiz_result = gr.Markdown()
+        
+        quiz_gen_btn.click(
+            fn=do_generate_quiz,
+            inputs=[quiz_cat],
+            outputs=[quiz_display, quiz_result],
+        )
+        quiz_check_btn.click(
+            fn=do_check_answers,
+            inputs=[quiz_answer],
+            outputs=[quiz_result],
         )
 
 
-# ============================================
-# 啟動
-# ============================================
-
 if __name__ == "__main__":
-    demo.launch(
-        server_name="0.0.0.0",
-        server_port=7860,
-        share=False,
-    )
+    demo.launch(server_name="0.0.0.0", server_port=7860, share=False)

@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "name": "排灣語結構化語料庫",
+    "version": "2.0",
+    "source": "原專案 intent_training.jsonl + paiwan_phrases.txt + game_vocabulary.json",
+    "total_entries": 158,
+    "description": "按語法結構分類的排灣語教學語料"
+  },
+  "categories": {
+    "greeting": {
+      "name": "問候與回應",
+      "icon": "🏠",
+      "description": "日常問候、感謝、道別",
+      "sentences": [
+        {"paiwan": "na tarivak sun?", "chinese": "你好嗎？", "intent": "greeting", "grammar_note": "na 為過去時態標記，tarivak 意為「好」，sun 為「你」"},
+        {"paiwan": "ui, na tarivak aken, uta.", "chinese": "我也很好，謝謝你。", "intent": "greeting_response", "grammar_note": "aken 為「我」，uta 為語氣詞「也」"},
+        {"paiwan": "na tarivak mun.", "chinese": "同學好（老師說）", "intent": "greeting", "grammar_note": "mun 為「你們」（複數）"},
+        {"paiwan": "masalu!", "chinese": "謝謝！", "intent": "thanks", "grammar_note": "排灣語最常見的感謝詞"},
+        {"paiwan": "masalu aravac ta tja kiljivak", "chinese": "非常感謝大家的愛", "intent": "thanks", "grammar_note": "aravac 意為「非常」，tja 為「我們的」，kiljivak 為「愛」"},
+        {"paiwan": "nanguaq", "chinese": "好", "intent": "affirmation", "grammar_note": "簡單肯定回應"},
+        {"paiwan": "vaikanga aken!", "chinese": "再見了！", "intent": "farewell", "grammar_note": "vaikanga 為「走了」，aken 為「我」"},
+        {"paiwan": "pacunan", "chinese": "再見", "intent": "farewell", "grammar_note": "較正式的道別用語"}
+      ]
+    },
+    "identity": {
+      "name": "身份詢問",
+      "icon": "👤",
+      "description": "詢問名字、身份、關係",
+      "sentences": [
+        {"paiwan": "tima su ngadan?", "chinese": "你叫什麼名字？", "intent": "identity_query", "grammar_note": "tima 為疑問詞「誰」，su 為「你的」，ngadan 為「名字」"},
+        {"paiwan": "tima ngadan na su kama?", "chinese": "你爸爸叫什麼名字？", "intent": "identity_query", "grammar_note": "na su kama = 「你的爸爸」"},
+        {"paiwan": "tima zua?", "chinese": "那個人是誰？", "intent": "identity_query", "grammar_note": "zua 為指示代詞「那個」"},
+        {"paiwan": "tima zua a uqaljay?", "chinese": "那個男人是誰？", "intent": "identity_query", "grammar_note": "uqaljay 為「男人」，a 為連接詞"},
+        {"paiwan": "tima zua a vavayan?", "chinese": "那個女人是誰？", "intent": "identity_query", "grammar_note": "vavayan 為「女人」"}
+      ]
+    },
+    "quantity": {
+      "name": "數量詢問",
+      "icon": "🔢",
+      "description": "詢問數量、年齡、時間",
+      "sentences": [
+        {"paiwan": "mapida mun a taqumaqanan?", "chinese": "你們家有幾個人？", "intent": "quantity_query", "grammar_note": "mapida = 「多少」，taqumaqanan = 「家庭成員」"},
+        {"paiwan": "mapida su siruvetjek?", "chinese": "你有幾個兄弟姊妹？", "intent": "quantity_query", "grammar_note": "siruvetjek = 「兄弟姊妹」"},
+        {"paiwan": "pida anga su cavilj?", "chinese": "你幾歲？", "intent": "quantity_query", "grammar_note": "pida = 「多少」，cavilj = 「年/歲」，anga 為疑問語氣詞"},
+        {"paiwan": "pida su qadupu?", "chinese": "你有幾本書？", "intent": "quantity_query", "grammar_note": "qadupu = 「書」"},
+        {"paiwan": "pida milingan tucu?", "chinese": "現在是幾點鐘？", "intent": "quantity_query", "grammar_note": "milingan = 「時間/小時」，tucu = 「現在」"},
+        {"paiwan": "pida qadaw nu isiukang?", "chinese": "一個星期有幾天？", "intent": "quantity_query", "grammar_note": "qadaw = 「天」，isiukang = 「星期」"},
+        {"paiwan": "sikamasan pida qadaw tucu ta isiukang?", "chinese": "今天是星期幾？", "intent": "quantity_query", "grammar_note": "sikamasan = 「第幾」"}
+      ]
+    },
+    "location": {
+      "name": "位置與去向",
+      "icon": "📍",
+      "description": "詢問地點、來處、去向",
+      "sentences": [
+        {"paiwan": "ainu a ku inpic?", "chinese": "我的筆在哪裡？", "intent": "location_query", "grammar_note": "ainu = 「在哪裡」，ku = 「我的」"},
+        {"paiwan": "inuan a su kama?", "chinese": "你爸爸在哪裡？", "intent": "location_query", "grammar_note": "inuan = 「在哪裡」（疑問形式）"},
+        {"paiwan": "inuan a nu umaq?", "chinese": "你們家在哪裡？", "intent": "location_query", "grammar_note": "umaq = 「家」"},
+        {"paiwan": "kemasinu sun?", "chinese": "你從哪裡來的？", "intent": "location_query", "grammar_note": "kemasinu = 「從哪裡來」"},
+        {"paiwan": "uri semainu sun tucu?", "chinese": "你現在要去哪裡？", "intent": "location_query", "grammar_note": "uri = 未來時態，semainu = 「去哪裡」"},
+        {"paiwan": "kasinu mun katiaw?", "chinese": "你們昨天去哪裡？", "intent": "location_query", "grammar_note": "kasinu = 「去了哪裡」（過去式），katiaw = 「昨天」"}
+      ]
+    },
+    "negation": {
+      "name": "否定與禁止",
+      "icon": "🚫",
+      "description": "否定句、禁止句",
+      "sentences": [
+        {"paiwan": "ini, vuday azua.", "chinese": "不，那是玉米。", "intent": "negation", "grammar_note": "ini = 否定詞「不」，vuday = 「玉米」"},
+        {"paiwan": "ini, ku kina timadju.", "chinese": "不，她是我媽媽。", "intent": "negation", "grammar_note": "ku kina = 「我的媽媽」，timadju = 「他/她」"},
+        {"paiwan": "ini, inika sinsi timadju.", "chinese": "不，他不是老師。", "intent": "negation", "grammar_note": "inika = 屬性否定「不是」，sinsi = 「老師」"},
+        {"paiwan": "ini, inika qaca ku kina.", "chinese": "不，我媽媽不高。", "intent": "negation", "grammar_note": "inika = 屬性否定，qaca = 「高」"},
+        {"paiwan": "maya gemalju!", "chinese": "別遲到！", "intent": "prohibition", "grammar_note": "maya = 禁止「不要」，gemalju = 「遲到」"},
+        {"paiwan": "maya piteval!", "chinese": "別浪費！", "intent": "prohibition", "grammar_note": "piteval = 「浪費」"},
+        {"paiwan": "maya kiljavaran!", "chinese": "別說話！", "intent": "prohibition", "grammar_note": "kiljavaran = 「說話」"},
+        {"paiwan": "maya taqed!", "chinese": "別睡覺！", "intent": "prohibition", "grammar_note": "taqed = 「睡覺」"}
+      ]
+    },
+    "culture": {
+      "name": "文化知識",
+      "icon": "🌾",
+      "description": "排灣族文化、歷史、語言背景",
+      "sentences": [
+        {"paiwan": "a sinipapungadan tu paiwan a caucau nuaya", "chinese": "排灣族的名稱是經過研究而定的", "intent": "culture", "grammar_note": "sinipapungadan = 「被命名的」"},
+        {"paiwan": "sikamasan musalj a kinatjuruvu ta caucau na sekacalisian", "chinese": "原住民族十六族中之第二大族", "intent": "culture", "grammar_note": "sikamasan musalj = 「第二」，kinatjuruvu = 「人口數」"},
+        {"paiwan": "a kinaizuavan nua paiwan a caucau i pasa tjalja navanavaljan ta taiwan", "chinese": "排灣族分布於台灣南端", "intent": "culture", "grammar_note": "kinaizuavan = 「居住地」，navanavaljan = 「南方」"},
+        {"paiwan": "na seminamalji aravac a vinarungan na payuan", "chinese": "排灣族人的想法非常微妙", "intent": "culture", "grammar_note": "seminamalji = 「微妙」，vinarungan = 「想法/心」"},
+        {"paiwan": "tjengelay a pakacadja a pakeljang ta vinarungan", "chinese": "想要清楚地表達內心的意思", "intent": "culture", "grammar_note": "tjengelay = 「想要」，pakeljang = 「讓人知道」"}
+      ]
+    },
+    "poetry": {
+      "name": "族語詩歌",
+      "icon": "🎵",
+      "description": "排灣族傳統詩歌與歌謠",
+      "sentences": [
+        {"paiwan": "vangaw vangaw qemudalj nungida?", "chinese": "天窗呀！何時會下雨呢？", "intent": "poetry", "grammar_note": "vangaw = 「天窗」，qemudalj = 「下雨」，nungida = 「何時」"},
+        {"paiwan": "pacuno a sasiq a mangtjengtjez", "chinese": "你看吧！螞蟻正爬進來", "intent": "poetry", "grammar_note": "pacuno = 「你看」，sasiq = 「螞蟻」，mangtjengtjez = 「爬進來」"},
+        {"paiwan": "ari ari kipaqudjalji", "chinese": "走吧！我們一起去淋雨", "intent": "poetry", "grammar_note": "ari = 「走吧」，kipaqudjalji = 「一起去淋雨」"}
+      ]
+    }
+  },
+  "grammar_guide": {
+    "pronouns": {
+      "title": "代名詞系統",
+      "entries": [
+        {"paiwan": "aken", "chinese": "我（主格）", "note": "句首或動詞後"},
+        {"paiwan": "sun", "chinese": "你（主格）", "note": "句首或動詞後"},
+        {"paiwan": "timadju", "chinese": "他/她", "note": "第三人稱"},
+        {"paiwan": "mun", "chinese": "你們", "note": "複數第二人稱"},
+        {"paiwan": "itjen / tjanuitjen", "chinese": "我們（包含聽者）", "note": "包容式複數"},
+        {"paiwan": "ku / su / na", "chinese": "我的/你的/他的（所有格）", "note": "前綴於名詞"}
+      ]
+    },
+    "tense_markers": {
+      "title": "時態標記",
+      "entries": [
+        {"marker": "na", "type": "過去/完成", "example": "na tarivak sun?（你好嗎？— 已經好了）"},
+        {"marker": "uri", "type": "未來/將要", "example": "uri semainu sun tucu?（你現在要去哪裡？）"},
+        {"marker": "nu", "type": "條件/假設", "example": "nu qezemezemetj（晚上的時候）"}
+      ]
+    },
+    "negation": {
+      "title": "否定系統",
+      "entries": [
+        {"marker": "ini", "type": "陳述否定", "example": "ini, vuday azua.（不，那是玉米。）"},
+        {"marker": "inika", "type": "屬性否定", "example": "inika sinsi timadju.（他不是老師。）"},
+        {"marker": "maya", "type": "禁止", "example": "maya kiljavaran!（別說話！）"}
+      ]
+    },
+    "interrogatives": {
+      "title": "疑問詞",
+      "entries": [
+        {"paiwan": "tima", "chinese": "誰", "example": "tima su ngadan?（你叫什麼名字？）"},
+        {"paiwan": "anema", "chinese": "什麼", "example": "anema cu?（這是什麼？）"},
+        {"paiwan": "pida / mapida", "chinese": "多少", "example": "pida anga su cavilj?（你幾歲？）"},
+        {"paiwan": "inu / inuan", "chinese": "哪裡", "example": "inuan a su kama?（你爸爸在哪裡？）"},
+        {"paiwan": "nungida", "chinese": "何時", "example": "vangaw qemudalj nungida?（何時會下雨？）"},
+        {"paiwan": "sinu / kasinu", "chinese": "從哪裡", "example": "kemasinu sun?（你從哪裡來？）"}
+      ]
+    }
+  }
+}
