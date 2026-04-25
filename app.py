@@ -24,6 +24,7 @@ from modules.asr_evaluator import (
     evaluate_pronunciation, evaluate_text,
 )
 from modules.grammar_explainer import explain_sentence, generate_quiz, explain_affix
+from tts_service import get_paiwan_audio_for_text, list_available_paiwan_audio
 
 # ============================================
 # 載入語料庫
@@ -295,6 +296,25 @@ with gr.Blocks(
                     type="filepath",
                     label="🎤 錄下你的發音",
                 )
+                # 正確發音播放
+                correct_audio = gr.Audio(
+                    label="🔊 聽聽正確發音（TTS 合成）",
+                    type="filepath",
+                    visible=True,
+                )
+                
+                def get_correct_pronunciation_audio(sentence_idx):
+                    if sentence_idx is None or sentence_idx >= len(ALL_SENTENCES):
+                        return None
+                    target = ALL_SENTENCES[sentence_idx]
+                    return get_paiwan_audio_for_text(target["paiwan"])
+                
+                eval_sentence.change(
+                    fn=get_correct_pronunciation_audio,
+                    inputs=[eval_sentence],
+                    outputs=[correct_audio],
+                )
+                
                 eval_btn = gr.Button("📊 開始評測", variant="primary")
             
             with gr.Column(scale=1):
@@ -344,6 +364,68 @@ with gr.Blocks(
     # ==========================================
     with gr.Tab("📚 語料庫瀏覽"):
         gr.Markdown(build_corpus_display())
+    
+    # ==========================================
+    # Tab 3.5: 語音播放
+    # ==========================================
+    with gr.Tab("🔊 排灣語語音"):
+        gr.Markdown("""
+        ### 排灣語 TTS 語音合成
+        以下音檔來自 XTTS v2 微調模型（零樣本語音克隆），使用排灣族長老錄音作為參考音色。
+        """)
+        
+        tts_available = list_available_paiwan_audio()
+        
+        gr.Markdown(f"**📊 詞彙音檔**: {len(tts_available['words'])} 個 | **句子音檔**: {len(tts_available['sentences'])} 個")
+        
+        with gr.Accordion("🎵 詞彙發音（點擊展開）", open=False):
+            word_choices = tts_available["words"]
+            tts_word_dropdown = gr.Dropdown(
+                choices=word_choices,
+                label="選擇排灣語詞彙",
+                value=word_choices[0] if word_choices else None,
+            )
+            tts_word_btn = gr.Button("▶️ 播放", variant="primary")
+            tts_word_audio = gr.Audio(label="排灣語語音", type="filepath")
+            
+            def play_paiwan_word(word):
+                from tts_service import get_paiwan_audio
+                return get_paiwan_audio(word)
+            
+            tts_word_btn.click(
+                fn=play_paiwan_word,
+                inputs=[tts_word_dropdown],
+                outputs=[tts_word_audio],
+            )
+        
+        with gr.Accordion("🗣️ 句子發音（點擊展開）", open=True):
+            sentence_choices = tts_available["sentences"]
+            tts_sentence_dropdown = gr.Dropdown(
+                choices=sentence_choices,
+                label="選擇排灣語句子",
+                value=sentence_choices[0] if sentence_choices else None,
+            )
+            tts_sentence_btn = gr.Button("▶️ 播放", variant="primary")
+            tts_sentence_audio = gr.Audio(label="排灣語句子語音", type="filepath")
+            
+            def play_paiwan_sentence(sentence):
+                from tts_service import get_paiwan_audio
+                return get_paiwan_audio(sentence)
+            
+            tts_sentence_btn.click(
+                fn=play_paiwan_sentence,
+                inputs=[tts_sentence_dropdown],
+                outputs=[tts_sentence_audio],
+            )
+        
+        gr.Markdown("""
+        ---
+        **技術說明**：
+        - 語音合成模型：XTTS v2（零樣本語音克隆）
+        - 參考音色：排灣族長老真實錄音
+        - 擴展詞彙表：+104 個排灣語 tokens
+        - 合成詞彙數：50 個常用詞 + 8 個完整句子
+        """)
     
     # ==========================================
     # Tab 4: 測驗
