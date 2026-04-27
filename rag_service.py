@@ -40,6 +40,10 @@ INDEX_FILE = DATA_DIR / "faiss_index.bin"
 METADATA_FILE = DATA_DIR / "corpus_metadata.json"
 EMBEDDINGS_FILE = DATA_DIR / "paiwan_embeddings.npy"
 
+# 合併版索引（優先使用）
+MERGED_INDEX = DATA_DIR / "merged_faiss.index"
+MERGED_CORPUS = DATA_DIR / "merged_corpus.json"
+
 # ============================================
 # Embedding 客戶端
 # ============================================
@@ -267,7 +271,20 @@ class PaiwanRAG:
     # ── 快取管理 ──
 
     def _load_cached(self) -> bool:
-        """嘗試載入快取的索引和 metadata"""
+        """嘗試載入快取的索引和 metadata（優先合併版）"""
+        # 優先載入合併版
+        if MERGED_INDEX.exists() and MERGED_CORPUS.exists():
+            try:
+                self.index = faiss.read_index(str(MERGED_INDEX))
+                with open(MERGED_CORPUS, "r", encoding="utf-8") as f:
+                    raw = json.load(f)
+                    self.metadata = raw.get("entries", raw) if isinstance(raw, dict) else raw
+                print(f"✅ 載入合併索引：{len(self.metadata)} 筆語料")
+                return True
+            except Exception as e:
+                print(f"⚠️ 合併索引載入失敗: {e}")
+
+        # 回退到舊版
         if not all(f.exists() for f in [INDEX_FILE, METADATA_FILE, EMBEDDINGS_FILE]):
             return False
 
