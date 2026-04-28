@@ -305,29 +305,49 @@ VERIFICATION_TOKEN = os.getenv("FEISHU_VERIFICATION_TOKEN", "")
 ENCRYPT_KEY = os.getenv("FEISHU_ENCRYPT_KEY", "")
 
 
+# ============================================
+# 事件去重（防止飛書重試導致重複回覆）
+# ============================================
+_processed_events = set()
+MAX_PROCESSED = 1000  # 最多記住 1000 個 event_id
+
+
 @app.route("/feishu/webhook", methods=["POST"])
 def handle_webhook():
     """飛書事件回調入口"""
     data = request.json
-    print(f"[webhook] 收到事件: type={data.get('type')}, schema={data.get('schema')}")
+    print(f"[webhook] 收到事件: type={data.get('type')}, schema={data.get('schema')}", flush=True)
     
     # 1. URL 驗證
     if data.get("type") == "url_verification":
         challenge = data.get("challenge", "")
-        print(f"[webhook] URL 驗證: challenge={challenge[:20]}...")
+        print(f"[webhook] URL 驗證: challenge={challenge[:20]}...", flush=True)
         return jsonify({"challenge": challenge})
     
-    # 2. 驗證 token（如果有設置）
+    # 2. 事件去重（飛書會重試最多 3 次，event_id 相同表示重試）
+    event_id = data.get("header", {}).get("event_id", "")
+    if event_id and event_id in _processed_events:
+        print(f"[webhook] 重複事件 {event_id[:20]}...，跳過", flush=True)
+        return jsonify({"code": 0})
+    if event_id:
+        _processed_events.add(event_id)
+        if len(_processed_events) > MAX_PROCESSED:
+            # 清掉最舊的一半
+            _processed_events.difference_update(set(list(_processed_events)[:MAX_PROCESSED // 2]))
+    
+    # 3. 驗證 token（如果有設置）
     if VERIFICATION_TOKEN and data.get("token") != VERIFICATION_TOKEN:
-        print(f"[webhook] Token 驗證失敗")
+        print(f"[webhook] Token 驗證失敗", flush=True)
         return jsonify({"code": -1})
     
-    # 3. 處理事件
+    # 4. 處理事件 — 支持飛書 v2 事件格式
     event = data.get("event", {})
-    event_type = event.get("type", "")
+    event_type = data.get("header", {}).get("event_type", "") or event.get("type", "")
     
-    # 訊息事件
-    if event_type == "message":
+    print(f"[webhook] event_type={event_type}", flush=True)
+    
+    # 訊息事件（兼容 v1 "message" 和 v2 "im.message.receive_v1"）
+    if event_type in ("message", "im.message.receive_v1"):
         # 取得訊息資訊
         message = event.get("message", {})
         msg_type = message.get("message_type", "")
@@ -335,7 +355,7 @@ def handle_webhook():
         sender = event.get("sender", {})
         open_id = sender.get("open_id", "unknown")
         
-        print(f"[webhook] 訊息: type={msg_type}, from={open_id[:15]}...")
+        print(f"[webhook] 訊息: type={msg_type}, from={open_id[:15]}...", flush=True)
         
         # 文字訊息
         if msg_type == "text":
@@ -348,7 +368,7 @@ def handle_webhook():
             # 去掉 @機器人 的 mention
             text = text.replace("@_user_1", "").strip()
             
-            print(f"[webhook] 文字內容: {text[:50]}...")
+            print(f"[webhook] 文字內容: {text[:50]}...", flush=True)
             
             # 路由指令
             reply = route_message(text, open_id, message_id)
@@ -360,7 +380,7 @@ def handle_webhook():
             content = json.loads(message.get("content", "{}"))
             file_key = content.get("file_key", "")
             
-            print(f"[webhook] 語音訊息: file_key={file_key[:20]}...")
+            print(f"[webhook] 語音訊息: file_key={file_key[:20]}...", flush=True)
             
             # 下載語音
             ogg_path = download_audio(message_id, file_key)
@@ -473,4 +493,4 @@ if __name__ == "__main__":
     print("   3. 在飛書私聊 Bot 測試")
     print()
     
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=False)

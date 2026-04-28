@@ -1,0 +1,26 @@
+{
+  "test_size": 40,
+  "corpus_size": 4844,
+  "methods": {
+    "keyword": {
+      "bleu": 0.91598,
+      "exact": 0.825,
+      "n": 40
+    },
+    "vector": {
+      "bleu": 0.8524149999999999,
+      "exact": 0.725,
+      "n": 40
+    },
+    "hybrid": {
+      "bleu": 0.8733000000000001,
+      "exact": 0.775,
+      "n": 40
+    }
+  },
+  "detailed": {
+    "keyword": [],
+    "vector": [],
+    "hybrid": []
+  }
+}
