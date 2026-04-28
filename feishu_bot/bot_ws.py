@@ -292,6 +292,18 @@ def handle_im_message(data) -> None:
             reply = route_message(text, open_id)
             if reply:
                 send_reply(message_id, reply)
+            
+            # 寫入飛書多維表格（語料收集）
+            try:
+                from bitable_writer import write_transcription
+                write_transcription(
+                    asr_text=text,
+                    chinese_translation=reply[:100] if reply else "",
+                    source="飛書對話",
+                )
+                print(f"  ✅ 已寫入 Bitable")
+            except Exception as e:
+                print(f"  ⚠️ Bitable 寫入失敗: {e}")
 
         elif msg_type == "audio":
             content_str = message.content if message else "{}"
