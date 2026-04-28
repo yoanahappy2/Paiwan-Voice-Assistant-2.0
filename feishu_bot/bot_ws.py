@@ -296,9 +296,20 @@ def handle_im_message(data) -> None:
             # 寫入飛書多維表格（語料收集）
             try:
                 from bitable_writer import write_transcription
+                # 只寫入翻譯結果，不寫完整回覆
+                translation = ""
+                if text.startswith("/translate") or text.startswith("/翻譯"):
+                    # 翻譯指令：提取 ↓ 後面的翻譯結果
+                    if "↓" in (reply or ""):
+                        translation = reply.split("↓")[-1].strip()
+                    else:
+                        translation = reply or ""
+                else:
+                    # 一般對話：不寫翻譯欄位，只記錄用戶輸入
+                    translation = ""
                 write_transcription(
                     asr_text=text,
-                    chinese_translation=reply[:100] if reply else "",
+                    chinese_translation=translation,
                     source="飛書對話",
                 )
                 print(f"  ✅ 已寫入 Bitable")
