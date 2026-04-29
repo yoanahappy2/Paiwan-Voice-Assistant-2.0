@@ -48,6 +48,8 @@ if not FEISHU_APP_ID or not FEISHU_APP_SECRET:
 _llm_service = None
 _translate_service = None
 _corpus_data = None
+_active_learner = None
+_confirmation_state = {}  # {open_id: {input, translation, level, entry}}
 
 
 def get_llm_service():
@@ -86,6 +88,16 @@ def get_corpus_data():
             _corpus_data = []
             print("[bot] ⚠️ 語料庫未找到")
     return _corpus_data
+
+
+def get_active_learner():
+    global _active_learner
+    if _active_learner is None:
+        sys.path.insert(0, str(PROJECT_ROOT))
+        from active_learner import ActiveLearner
+        _active_learner = ActiveLearner()
+        print("[bot] ✅ 主動學習引擎已載入")
+    return _active_learner
 
 
 # ============================================
@@ -141,9 +153,56 @@ def handle_translate(text: str, open_id: str) -> str:
             translation = result.get("translation", str(result))
         else:
             translation = str(result)
+
+        # === 主動學習：評估置信度 ===
+        learner = get_active_learner()
+        conf_eval = learner.evaluate_confidence(result)
+        
+        # 記錄到學習日誌
+        learner.log_interaction(
+            user_input=query,
+            translation_result=result,
+            confidence_eval=conf_eval,
+            source="飛書對話",
+        )
+
+        # 寫入 Bitable（帶置信度等級）
+        try:
+            from bitable_writer import write_transcription
+            write_transcription(
+                asr_text=query,
+                chinese_translation=translation,
+                confidence=conf_eval["confidence"],
+                source="飛書對話",
+                confidence_level=conf_eval["level"],
+                method=result.get("method", "unknown"),
+                needs_confirmation=conf_eval["needs_confirmation"],
+            )
+        except Exception as e:
+            print(f"  ⚠️ Bitable 寫入失敗: {e}")
+
         add_to_history(open_id, "user", f"[翻譯] {query}")
         add_to_history(open_id, "assistant", translation)
-        return f"🔄 翻譯結果：\n\n{query}\n  ↓\n{translation}"
+
+        # 如果需要確認，保存狀態並提示用戶
+        base_reply = f"🔄 翻譯結果：\n\n{query}\n  ↓\n{translation}"
+        
+        if conf_eval["needs_confirmation"]:
+            confirm_prompt = learner.generate_confirmation_prompt(
+                query, translation, conf_eval["level"]
+            )
+            _confirmation_state[open_id] = {
+                "input": query,
+                "translation": translation,
+                "level": conf_eval["level"],
+                "method": result.get("method", "unknown"),
+            }
+            base_reply += f"\n\n---\n{confirm_prompt}"
+        else:
+            # 高置信度，加個小標記
+            base_reply += "\n\n🟢 (高置信度翻譯)"
+
+        return base_reply
     except Exception as e:
         return f"翻譯服務暫時不可用: {e}"
 
@@ -195,6 +254,21 @@ def handle_daily() -> str:
 # ============================================
 
 def handle_chat(text: str, open_id: str) -> str:
+    # 檢查是否有待確認的翻譯
+    if open_id in _confirmation_state:
+        if text.strip() in ["✅", "正確", "對", "yes", "y", "是"]:
+            state = _confirmation_state.pop(open_id)
+            learner = get_active_learner()
+            reply = learner.process_feedback(state["input"], "✅")
+            return reply
+        elif text.strip() in ["❌", "不正確", "錯", "no", "n", "否"]:
+            state = _confirmation_state.pop(open_id)
+            learner = get_active_learner()
+            reply = learner.process_feedback(state["input"], "❌")
+            return reply
+        # 如果用戶說了別的（不是確認反饋），清除確認狀態，繼續正常對話
+        _confirmation_state.pop(open_id, None)
+
     # Quiz 模式
     if open_id in _quiz_state:
         quiz = _quiz_state[open_id]
@@ -293,26 +367,32 @@ def handle_im_message(data) -> None:
             if reply:
                 send_reply(message_id, reply)
             
-            # 寫入飛書多維表格（語料收集）
+            # 寫入飛書多維表格（語料收集 — 主動學習）
             try:
                 from bitable_writer import write_transcription
-                # 只寫入翻譯結果，不寫完整回覆
-                translation = ""
+                learner = get_active_learner()
+                
                 if text.startswith("/translate") or text.startswith("/翻譯"):
-                    # 翻譯指令：提取 ↓ 後面的翻譯結果
-                    if "↓" in (reply or ""):
-                        translation = reply.split("↓")[-1].strip()
-                    else:
-                        translation = reply or ""
+                    # 翻譯指令：已在 handle_translate 裡處理 Bitable 寫入
+                    pass
                 else:
-                    # 一般對話：不寫翻譯欄位，只記錄用戶輸入
-                    translation = ""
-                write_transcription(
-                    asr_text=text,
-                    chinese_translation=translation,
-                    source="飛書對話",
-                )
-                print(f"  ✅ 已寫入 Bitable")
+                    # 一般對話：只記錄用戶輸入（低置信度，需人工確認）
+                    write_transcription(
+                        asr_text=text,
+                        chinese_translation="",
+                        confidence=0.0,
+                        source="飛書對話",
+                        confidence_level="low",
+                        method="chat",
+                        needs_confirmation=True,
+                    )
+                    learner.log_interaction(
+                        user_input=text,
+                        translation_result={"method": "chat", "translation": ""},
+                        confidence_eval={"confidence": 0.0, "level": "low", "needs_confirmation": True, "needs_human_review": True, "auto_accept": False},
+                        source="飛書對話",
+                    )
+                    print(f"  ✅ 已寫入 Bitable (一般對話)")
             except Exception as e:
                 print(f"  ⚠️ Bitable 寫入失敗: {e}")
 

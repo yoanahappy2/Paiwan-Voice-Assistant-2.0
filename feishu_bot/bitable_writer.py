@@ -62,9 +62,22 @@ def write_transcription(
     chinese_translation: str = "",
     confidence: float = 0.0,
     source: str = "飛書對話",
+    confidence_level: str = "",
+    method: str = "",
+    needs_confirmation: bool = False,
 ) -> dict:
     """
     將一筆轉寫結果寫入飛書多維表格
+    
+    Args:
+        asr_text: ASR 轉寫文字
+        corrected_text: 校正後文字
+        chinese_translation: 中文翻譯
+        confidence: 置信度 (0-1)
+        source: 語料來源
+        confidence_level: high/medium/low
+        method: exact/rag_llm/error
+        needs_confirmation: 是否需要用戶確認
     """
     token = get_token()
     headers = {
@@ -82,6 +95,16 @@ def write_transcription(
         fields["語料來源"] = source
     if confidence > 0:
         fields["置信度"] = round(confidence * 100, 1)
+    
+    # 主動學習欄位
+    if method:
+        fields["翻譯方法"] = method
+    if confidence_level:
+        fields["置信度等級"] = {"high": "🟢高", "medium": "🟡中", "low": "🔴低"}.get(confidence_level, confidence_level)
+    if needs_confirmation:
+        fields["是否正確"] = "⚠️待確認"
+    elif confidence >= 0.85:
+        fields["是否正確"] = "✅自動接受"
     
     url = f"https://open.feishu.cn/open-apis/bitable/v1/apps/{BITABLE_APP_TOKEN}/tables/{BITABLE_TABLE_ID}/records"
     
