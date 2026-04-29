@@ -135,6 +135,7 @@ def handle_help() -> str:
         "📋 指令列表：\n"
         "• /help — 查看幫助\n"
         "• /translate <文字> — 排灣語⇄中文翻譯\n"
+        "• /lookup <詞> — 詞彙解析（相關詞+綴詞分析）\n"
         "• /learn — 學一個新詞\n"
         "• /quiz — 排灣語小測驗\n"
         "• /daily — 每日一句排灣語\n\n"
@@ -205,6 +206,25 @@ def handle_translate(text: str, open_id: str) -> str:
         return base_reply
     except Exception as e:
         return f"翻譯服務暫時不可用: {e}"
+
+
+def handle_lookup(text: str) -> str:
+    """詞彙解析：相關詞 + 綴詞分析 + 親屬關係"""
+    word = text.strip()
+    if not word:
+        return "請輸入要查詢的詞，例如：\n/lookup masalu\n/lookup 母親"
+    try:
+        sys.path.insert(0, str(PROJECT_ROOT))
+        from knowledge_graph import PaiwanKnowledgeGraph
+        kg = PaiwanKnowledgeGraph()
+        result = kg.lookup(word)
+        reply = kg.format_lookup_reply(result)
+        if reply:
+            return reply
+        else:
+            return f"找不到「{word}」的相關資訊。\n試試 /translate {word} 來翻譯看看！"
+    except Exception as e:
+        return f"詞彙查詢服務暫時不可用: {e}"
 
 
 def handle_learn(open_id: str) -> str:
@@ -312,6 +332,9 @@ def route_message(text: str, open_id: str) -> str | None:
     elif text.startswith("/translate ") or text.startswith("/翻譯 "):
         query = text.split(" ", 1)[1] if " " in text else ""
         return handle_translate(query, open_id)
+    elif text.startswith("/lookup ") or text.startswith("/查詞 "):
+        query = text.split(" ", 1)[1] if " " in text else ""
+        return handle_lookup(query)
     elif text.startswith("/learn") or text.startswith("/學習"):
         return handle_learn(open_id)
     elif text.startswith("/quiz") or text.startswith("/測驗"):
