@@ -55,6 +55,84 @@ def trim_reference_audio(input_path, output_path, max_seconds=5.0):
     return output_path
 
 
+def detect_and_trim_repetition(wav_path, sample_rate=22050, window_ms=300, threshold=0.92):
+    """
+    檢測生成的音檔中是否有連續重複的音頻段落，如果有則截斷。
+    
+    原理：將音頻分成小段，比較相鄰段的 cosine 相似度。
+    如果連續多段高度相似，表示模型陷入了重複 loop。
+    
+    Args:
+        wav_path: 要檢查的音檔路徑
+        sample_rate: 取樣率
+        window_ms: 每段長度（毫秒）
+        threshold: 相似度閾值，超過此值視為重複
+    Returns:
+        True 如果有截斷，False 如果音檔正常
+    """
+    import numpy as np
+    
+    try:
+        import torchaudio
+        waveform, sr = torchaudio.load(str(wav_path))
+    except ImportError:
+        # fallback to wave
+        with wave.open(str(wav_path), 'rb') as w:
+            sr = w.getframerate()
+            n = w.getnframes()
+            raw = w.readframes(n)
+            samples = np.frombuffer(raw, dtype=np.int16).astype(np.float32)
+            waveform = torch.from_numpy(samples).unsqueeze(0) / 32768.0
+    
+    if sr != sample_rate:
+        import torchaudio.transforms as T
+        resampler = T.Resample(sr, sample_rate)
+        waveform = resampler(waveform)
+        sr = sample_rate
+    
+    samples = waveform[0].numpy()
+    window_size = int(sr * window_ms / 1000)
+    if len(samples) < window_size * 3:
+        return False  # 太短，不檢查
+    
+    # 分段
+    n_windows = len(samples) // window_size
+    segments = samples[:n_windows * window_size].reshape(n_windows, window_size)
+    
+    # 計算相鄰段相似度
+    repeat_start = None
+    consecutive_repeats = 0
+    
+    for i in range(1, n_windows):
+        # cosine similarity
+        a = segments[i - 1]
+        b = segments[i]
+        norm_a = np.linalg.norm(a)
+        norm_b = np.linalg.norm(b)
+        if norm_a < 1e-6 or norm_b < 1e-6:
+            continue
+        sim = np.dot(a, b) / (norm_a * norm_b)
+        
+        if sim > threshold:
+            consecutive_repeats += 1
+            if consecutive_repeats >= 2 and repeat_start is None:
+                repeat_start = (i - 1) * window_size
+        else:
+            consecutive_repeats = 0
+    
+    if repeat_start is not None and repeat_start > sr * 0.5:
+        # 截斷到重複開始前
+        trimmed_samples = samples[:repeat_start]
+        print(f"  ⚠️ 偵測到重複段落，截斷至 {repeat_start/sr:.1f}s (原始 {len(samples)/sr:.1f}s)")
+        
+        import torchaudio
+        trimmed_wave = torch.from_numpy(trimmed_samples).unsqueeze(0)
+        torchaudio.save(str(wav_path), trimmed_wave, sr)
+        return True
+    
+    return False
+
+
 def find_best_reference(wavs_dir):
     """
     找到最適合的參考音檔：
@@ -188,6 +266,8 @@ def main():
                 language=working_lang,
                 file_path=out_file
             )
+            # 檢測並截斷重複段落
+            detect_and_trim_repetition(out_file)
             success += 1
         except Exception as e:
             fail += 1
@@ -218,6 +298,7 @@ def main():
         out_file = str(sentences_dir / f"{fname}.wav")
         try:
             tts.tts_to_file(text=text, speaker_wav=trimmed_ref, language=working_lang, file_path=out_file)
+            detect_and_trim_repetition(out_file)
             print(f"  完成: {text}")
         except Exception as e:
             print(f"  失敗 {text}: {str(e)[:60]}")

@@ -390,9 +390,9 @@ def handle_im_message(data) -> None:
             if reply:
                 send_reply(message_id, reply)
             
-            # 寫入飛書多維表格（語料收集 — 主動學習）
+            # 寫入飛書多維表格（語料收集 — 主動學習 + 統計追蹤）
             try:
-                from bitable_writer import write_transcription
+                from bitable_writer import write_transcription, stats_tracker
                 learner = get_active_learner()
                 
                 if text.startswith("/translate") or text.startswith("/翻譯"):
@@ -418,6 +418,13 @@ def handle_im_message(data) -> None:
                     print(f"  ✅ 已寫入 Bitable (一般對話)")
             except Exception as e:
                 print(f"  ⚠️ Bitable 寫入失敗: {e}")
+
+            # 定期 flush 統計到 Bitable
+            try:
+                from bitable_writer import stats_tracker
+                stats_tracker.flush_to_bitable()
+            except Exception as e:
+                print(f"  ⚠️ 統計 flush 失敗: {e}")
 
         elif msg_type == "audio":
             content_str = message.content if message else "{}"
