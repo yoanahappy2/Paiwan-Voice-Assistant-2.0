@@ -10,3 +10,5 @@ tests/results/
 data/*.npy
 *.egg-info/
 modules/__pycache__/
+~$*
+*.docx
