@@ -12,3 +12,6 @@ data/*.npy
 modules/__pycache__/
 ~$*
 *.docx
+*.tar.gz
+*.pem
+docs/training_logs/
