@@ -1,6 +1,6 @@
 """
 feishu_bot/bitable_writer.py
-語聲同行 2.0 — 飛書多維表格寫入服務
+语声同行 2.0_yu — 飛書多維表格寫入服務
 
 功能：將 ASR 轉寫結果自動寫入飛書多維表格
 用途：語料收集、語言檔案化展示、學習統計
@@ -33,11 +33,11 @@ logger = logging.getLogger(__name__)
 APP_ID = os.getenv("FEISHU_APP_ID", "")
 APP_SECRET = os.getenv("FEISHU_APP_SECRET", "")
 
-# Bitable 配置
-BITABLE_APP_TOKEN = "KfUUbiz5taJhqJsFrDocjGP2nQu"
-TABLE_CORPUS = "tbl4WiIy8QIoa8pf"
-TABLE_VOCAB = "tblKXZLHvRAXio6Y"
-TABLE_AFFIX = "tbl0b9SwBIwHaEnH"
+# Bitable 配置（排灣族語研究室 App）
+BITABLE_APP_TOKEN = "DBe0bLbJRaWlRQsSZgJciXrLnIW"
+TABLE_CORPUS = "tblxxEnL08nPkmOk"
+TABLE_VOCAB = "tbljOpiUGUG8Iim6"
+TABLE_AFFIX = "tblb1pWYHFyevyav"
 
 # 學習統計表 ID（啟動時自動查找/建立）
 TABLE_STATS: Optional[str] = None
@@ -264,6 +264,64 @@ stats_tracker = StatsTracker()
 
 
 # ============================================
+# 詞彙自動回流（高置信度 → 詞彙關聯表）
+# ============================================
+
+def add_to_vocab_table(paiwan_word: str, chinese_meaning: str, word_type: str = "") -> bool:
+    """
+    將高置信度詞彙寫入詞彙關聯表（去重）。
+    處理網路錯誤，不影響主流程。
+    """
+    try:
+        url = (
+            f"https://open.feishu.cn/open-apis/bitable/v1/apps/{BITABLE_APP_TOKEN}"
+            f"/tables/{TABLE_VOCAB}/records"
+        )
+
+        # 查詢是否已存在
+        filter_payload = {
+            "filter": {
+                "conjunction": "and",
+                "conditions": [
+                    {
+                        "field_name": "多行文本",
+                        "operator": "is",
+                        "value": [paiwan_word.strip()]
+                    }
+                ]
+            }
+        }
+        query_url = url + "?page_size=1"
+        try:
+            data = _retry_request("GET", query_url, {})
+            # Check if any existing record matches
+            for rec in data.get("data", {}).get("items", []):
+                text_val = rec.get("fields", {}).get("多行文本", "")
+                if isinstance(text_val, list):
+                    text_val = "\n".join(str(t) for t in text_val)
+                if text_val.strip() == paiwan_word.strip():
+                    logger.info(f"詞彙已存在於關聯表，跳過: {paiwan_word}")
+                    return False
+        except Exception as e:
+            logger.warning(f"查詢詞彙關聯表失敗（繼續新增）: {e}")
+
+        # 新增記錄
+        fields = {"多行文本": paiwan_word.strip()}
+        if chinese_meaning:
+            fields["中文釋義"] = chinese_meaning
+        if word_type:
+            fields["詞類"] = word_type
+
+        _retry_request("POST", url, {"fields": fields})
+        logger.info(f"詞彙已寫入關聯表: {paiwan_word} = {chinese_meaning}")
+        stats_tracker.record(new_vocab=1)
+        return True
+    except Exception as e:
+        logger.warning(f"詞彙回流失敗（不影響主流程）: {e}")
+        return False
+
+
+# ============================================
 # 語料收集表寫入
 # ============================================
 
@@ -282,7 +340,7 @@ def write_transcription(
     """
     url = f"https://open.feishu.cn/open-apis/bitable/v1/apps/{BITABLE_APP_TOKEN}/tables/{TABLE_CORPUS}/records"
 
-    fields = {"多行文本": asr_text}
+    fields = {"文本": asr_text}
 
     if chinese_translation:
         fields["中文翻譯"] = chinese_translation
@@ -304,6 +362,13 @@ def write_transcription(
 
     result = _retry_request("POST", url, {"fields": fields})
 
+    # 高置信度詞彙自動回流到詞彙關聯表
+    if confidence_level == "high" and chinese_translation and corrected_text:
+        try:
+            add_to_vocab_table(corrected_text, chinese_translation)
+        except Exception:
+            pass  # 不影響主流程
+
     # 記錄統計
     is_translation = method in ("rag_llm", "exact", "error") or bool(chinese_translation)
     stats_tracker.record(
@@ -320,7 +385,7 @@ def batch_write(records: list) -> dict:
 
     payload = []
     for r in records:
-        fields = {"多行文本": r.get("asr_text", "")}
+        fields = {"文本": r.get("asr_text", "")}
         if r.get("chinese_translation"):
             fields["中文翻譯"] = r["chinese_translation"]
         if r.get("source"):

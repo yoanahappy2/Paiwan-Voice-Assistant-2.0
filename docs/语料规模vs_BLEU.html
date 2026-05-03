@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 700px;
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .title {
+    position: absolute; top: 25px; left: 0; right: 0;
+    text-align: center;
+    font-size: 26px; font-weight: 800; color: #2C3E50;
+  }
+  .subtitle {
+    position: absolute; top: 62px; left: 0; right: 0;
+    text-align: center;
+    font-size: 13px; color: #95A5A6;
+  }
+
+  /* Chart area */
+  .chart-area {
+    position: absolute;
+    top: 100px; left: 100px; right: 80px; bottom: 100px;
+  }
+
+  /* Y-axis */
+  .y-axis {
+    position: absolute; left: 0; top: 0; bottom: 40px;
+    width: 50px;
+  }
+  .y-label {
+    position: absolute; left: 0; width: 45px;
+    text-align: right; font-size: 13px; color: #7F8C8D;
+    transform: translateY(-50%);
+  }
+  .y-line {
+    position: absolute; left: 50px; right: 0;
+    border-top: 1px solid #ECF0F1;
+  }
+
+  /* X-axis baseline */
+  .x-base {
+    position: absolute; bottom: 40px; left: 50px; right: 0;
+    border-top: 2px solid #BDC3C7;
+  }
+
+  /* Bars */
+  .bars {
+    position: absolute;
+    top: 0; bottom: 40px; left: 50px; right: 0;
+    display: flex; align-items: flex-end; justify-content: space-around;
+    padding: 0 40px;
+  }
+
+  .bar-group {
+    display: flex; flex-direction: column; align-items: center;
+    width: 120px;
+  }
+
+  .bar-wrapper {
+    width: 100%; height: 420px;
+    display: flex; align-items: flex-end; justify-content: center;
+    position: relative;
+  }
+
+  .bar {
+    width: 70px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    transition: all 0.3s;
+  }
+  .bar .val {
+    position: absolute; top: -28px; left: 50%; transform: translateX(-50%);
+    font-size: 16px; font-weight: 800; white-space: nowrap;
+  }
+
+  .bar.red    { background: linear-gradient(to top, #C0392B, #E74C3C); }
+  .bar.red .val   { color: #E74C3C; }
+  .bar.amber  { background: linear-gradient(to top, #D68910, #F39C12); }
+  .bar.amber .val { color: #D68910; }
+  .bar.green  { background: linear-gradient(to top, #1E8449, #27AE60); }
+  .bar.green .val { color: #27AE60; }
+
+  .bar-label {
+    margin-top: 12px; text-align: center;
+    font-size: 13px; font-weight: 700; color: #2C3E50;
+    line-height: 1.4;
+  }
+  .bar-sub {
+    text-align: center; font-size: 11px; color: #95A5A6;
+  }
+
+  /* Annotation */
+  .anno {
+    position: absolute;
+    font-size: 14px; font-weight: 700; line-height: 1.5;
+  }
+  .anno-red {
+    bottom: 30px; left: 120px;
+    color: #E74C3C;
+    background: #FDEDEC; padding: 8px 14px; border-radius: 8px;
+    border: 1.5px solid #E74C3C;
+  }
+  .anno-jump {
+    top: 60px; right: 60px;
+    color: #27AE60;
+    background: #E8F8F0; padding: 8px 14px; border-radius: 8px;
+    border: 1.5px solid #27AE60;
+  }
+
+  /* Arrow - removed, annotation repositioned to right side */
+
+  .y-title {
+    position: absolute; left: 15px; top: 50%;
+    transform: rotate(-90deg) translateX(-50%);
+    font-size: 14px; font-weight: 700; color: #7F8C8D;
+    transform-origin: left center;
+  }
+</style>
+</head>
+<body>
+
+<div class="title">翻译质量与语料策略对比</div>
+<div class="subtitle">ICL 零样本/少样本完全失败，RAG 检索增强实现质的飞跃</div>
+
+<div class="y-title">BLEU 分数</div>
+
+<div class="chart-area">
+  <!-- Y-axis grid lines -->
+  <div class="y-label" style="bottom: 0%;">0.0</div>
+  <div class="y-line" style="bottom: 0%;"></div>
+  <div class="y-label" style="bottom: 20%;">0.2</div>
+  <div class="y-line" style="bottom: 20%;"></div>
+  <div class="y-label" style="bottom: 40%;">0.4</div>
+  <div class="y-line" style="bottom: 40%;"></div>
+  <div class="y-label" style="bottom: 60%;">0.6</div>
+  <div class="y-line" style="bottom: 60%;"></div>
+  <div class="y-label" style="bottom: 80%;">0.8</div>
+  <div class="y-line" style="bottom: 80%;"></div>
+  <div class="y-label" style="bottom: 100%;">1.0</div>
+  <div class="y-line" style="bottom: 100%;"></div>
+
+  <div class="x-base"></div>
+
+  <div class="bars">
+    <div class="bar-group">
+      <div class="bar-wrapper">
+        <div class="bar red" style="height: 2px;">
+          <div class="val">0.0</div>
+        </div>
+      </div>
+      <div class="bar-label">零样本</div>
+      <div class="bar-sub">（无检索）</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-wrapper">
+        <div class="bar red" style="height: 2px;">
+          <div class="val">0.0</div>
+        </div>
+      </div>
+      <div class="bar-label">ICL 5-shot</div>
+      <div class="bar-sub">（5 条示例）</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-wrapper">
+        <div class="bar red" style="height: 2px;">
+          <div class="val">0.0</div>
+        </div>
+      </div>
+      <div class="bar-label">ICL 10-shot</div>
+      <div class="bar-sub">（10 条示例）</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-wrapper">
+        <div class="bar red" style="height: 2px;">
+          <div class="val">0.0</div>
+        </div>
+      </div>
+      <div class="bar-label">ICL 20-shot</div>
+      <div class="bar-sub">（20 条示例）</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-wrapper">
+        <div class="bar amber" style="height: 45.2%;">
+          <div class="val">0.452</div>
+        </div>
+      </div>
+      <div class="bar-label">RAG</div>
+      <div class="bar-sub">（242 条语料）</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-wrapper">
+        <div class="bar green" style="height: 91.6%;">
+          <div class="val">0.916</div>
+        </div>
+      </div>
+      <div class="bar-label">RAG 完整</div>
+      <div class="bar-sub">（4,844 条语料）</div>
+    </div>
+  </div>
+</div>
+
+<!-- Annotations -->
+<div class="anno anno-red">
+  主流大模型（GLM-4、GPT-4）<br/>对排湾语 BLEU = 0，完全不懂
+</div>
+
+<div class="anno anno-jump">
+  RAG 检索增强实现质的飞跃<br/>从 0 直接跳到 0.452 → 0.916
+</div>
+
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1100px; height: 700px;
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .title {
+    position: absolute;
+    top: 15px; left: 0; right: 0;
+    text-align: center;
+    font-size: 24px; font-weight: 800; color: #2C3E50;
+  }
+  .subtitle {
+    position: absolute;
+    top: 48px; left: 0; right: 0;
+    text-align: center;
+    font-size: 12px; color: #95A5A6;
+  }
+
+  /* Top: Feishu Client */
+  .client-bar {
+    position: absolute;
+    top: 75px; left: 150px; width: 800px; height: 55px;
+    background: #3B5998; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 16px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  .client-bar span { margin: 0 15px; font-size: 13px; opacity: 0.8; }
+
+  /* Arrow down */
+  .down-arrow {
+    position: absolute; top: 134px; left: 530px;
+    width: 3px; height: 30px; background: #2C3E50;
+  }
+  .down-arrow::after {
+    content: ''; position: absolute; bottom: -6px; left: -5px;
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-top: 8px solid #2C3E50;
+  }
+
+  /* Bot Backend */
+  .bot-box {
+    position: absolute;
+    top: 170px; left: 250px; width: 600px; height: 50px;
+    background: #2980B9; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 15px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  .bot-box small { font-size: 11px; opacity: 0.7; margin-left: 10px; }
+
+  /* Agent boxes - Row */
+  .agent-row {
+    position: absolute;
+    top: 260px; left: 40px; right: 40px;
+    display: flex; justify-content: center; gap: 16px;
+  }
+  .agent {
+    width: 150px; height: 80px;
+    border-radius: 12px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: white; font-weight: 700; text-align: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  .agent .a-name { font-size: 13px; font-weight: 800; }
+  .agent .a-desc { font-size: 10px; opacity: 0.85; margin-top: 3px; }
+
+  .a-asr  { background: #E74C3C; }
+  .a-trans{ background: #3498DB; }
+  .a-teach{ background: #9B59B6; }
+  .a-speak{ background: #E67E22; }
+  .a-grow { background: #27AE60; }
+
+  /* Arrows from bot to agents */
+  .bot-to-agents {
+    position: absolute; top: 222px; left: 260px;
+  }
+
+  /* Knowledge Layer */
+  .knowledge-bar {
+    position: absolute;
+    top: 385px; left: 150px; width: 800px; height: 50px;
+    background: #F39C12; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 14px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  .knowledge-bar span { margin: 0 8px; font-size: 12px; opacity: 0.85; }
+
+  /* Bitable */
+  .bitable-bar {
+    position: absolute;
+    top: 480px; left: 250px; width: 600px; height: 50px;
+    background: #1ABC9C; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 14px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  .bitable-bar span { margin: 0 8px; font-size: 12px; opacity: 0.85; }
+
+  /* Bottom tech stack */
+  .tech-row {
+    position: absolute;
+    top: 570px; left: 100px; right: 100px;
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+  .tech {
+    padding: 6px 14px;
+    background: #F8F9FA; border: 1.5px solid #DEE2E6;
+    border-radius: 8px;
+    font-size: 11px; font-weight: 600; color: #495057;
+  }
+
+  /* SVG for connection lines */
+  svg.lines {
+    position: absolute; top: 0; left: 0;
+    width: 1100px; height: 700px;
+    pointer-events: none; z-index: 0;
+  }
+  .layer-label {
+    position: absolute; font-size: 11px; font-weight: 700; color: #7F8C8D;
+    writing-mode: vertical-lr; letter-spacing: 2px;
+  }
+  .l-platform { top: 78px; left: 50px; }
+  .l-backend  { top: 172px; left: 50px; }
+  .l-agents   { top: 275px; left: 50px; }
+  .l-knowledge{ top: 392px; left: 50px; }
+  .l-bitable  { top: 488px; left: 50px; }
+  .l-tech     { top: 580px; left: 50px; }
+</style>
+</head>
+<body>
+
+<div class="title">语声同行 2.0 — 系统架构</div>
+<div class="subtitle">基于 Agent-based 模块化架构的濒危语言 AI 保护框架</div>
+
+<!-- Layer labels -->
+<div class="layer-label l-platform">平台层</div>
+<div class="layer-label l-backend">后端层</div>
+<div class="layer-label l-agents">Agent 层</div>
+<div class="layer-label l-knowledge">知识层</div>
+<div class="layer-label l-bitable">数据层</div>
+<div class="layer-label l-tech">技术栈</div>
+
+<!-- Horizontal layer lines -->
+<svg class="lines" xmlns="http://www.w3.org/2000/svg">
+  <line x1="90" y1="73" x2="1060" y2="73" stroke="#E5E5E5" stroke-width="1"/>
+  <line x1="90" y1="167" x2="1060" y2="167" stroke="#E5E5E5" stroke-width="1"/>
+  <line x1="90" y1="252" x2="1060" y2="252" stroke="#E5E5E5" stroke-width="1"/>
+  <line x1="90" y1="378" x2="1060" y2="378" stroke="#E5E5E5" stroke-width="1"/>
+  <line x1="90" y1="473" x2="1060" y2="473" stroke="#E5E5E5" stroke-width="1"/>
+  <line x1="90" y1="558" x2="1060" y2="558" stroke="#E5E5E5" stroke-width="1"/>
+
+  <!-- Bot → agents vertical lines -->
+  <line x1="550" y1="222" x2="550" y2="258" stroke="#2980B9" stroke-width="2" stroke-dasharray="4,3"/>
+  <!-- Fan out to 5 agents -->
+  <line x1="550" y1="258" x2="115" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
+  <line x1="550" y1="258" x2="285" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
+  <line x1="550" y1="258" x2="455" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
+  <line x1="550" y1="258" x2="625" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
+  <line x1="550" y1="258" x2="795" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
+
+  <!-- Agents → knowledge -->
+  <line x1="550" y1="342" x2="550" y2="383" stroke="#F39C12" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <!-- Knowledge → Bitable -->
+  <line x1="550" y1="437" x2="550" y2="478" stroke="#1ABC9C" stroke-width="2" stroke-dasharray="4,3"/>
+</svg>
+
+<!-- Platform Layer -->
+<div class="client-bar">
+  飞书客户端
+  <span>|</span> Bot 聊天 <span>|</span> 语音消息 <span>|</span> 多维表格
+</div>
+
+<div class="down-arrow"></div>
+
+<!-- Backend -->
+<div class="bot-box">
+  语声同行 Bot 后端（Python + lark-oapi）
+  <small>WebSocket 长连接</small>
+</div>
+
+<!-- Agents -->
+<div class="agent-row">
+  <div class="agent a-asr">
+    <span class="a-name">ASR Agent</span>
+    <span class="a-desc">语音识别</span>
+    <span class="a-desc">96.8%</span>
+  </div>
+  <div class="agent a-trans">
+    <span class="a-name">Translation</span>
+    <span class="a-desc">RAG 翻译</span>
+    <span class="a-desc">BLEU 0.916</span>
+  </div>
+  <div class="agent a-teach">
+    <span class="a-name">Teaching</span>
+    <span class="a-desc">教学/测验</span>
+    <span class="a-desc">意图分类</span>
+  </div>
+  <div class="agent a-speak">
+    <span class="a-name">Speaking</span>
+    <span class="a-desc">口语练习</span>
+    <span class="a-desc">ASR→评价</span>
+  </div>
+  <div class="agent a-grow">
+    <span class="a-name">Growth</span>
+    <span class="a-desc">语料增长</span>
+    <span class="a-desc">主动学习</span>
+  </div>
+</div>
+
+<!-- Knowledge Layer -->
+<div class="knowledge-bar">
+  知识层
+  <span>|</span> RAG 语料 4,844 条 <span>|</span> FAISS 向量索引 <span>|</span> 音韵规则引擎 <span>|</span> 知识图谱 47 词
+</div>
+
+<!-- Bitable -->
+<div class="bitable-bar">
+  飞书 Bitable 多维表格
+  <span>|</span> 学习热力图 <span>|</span> 社群语料审核 <span>|</span> 词汇掌握统计
+</div>
+
+<!-- Tech Stack -->
+<div class="tech-row">
+  <div class="tech">Whisper-small + LoRA</div>
+  <div class="tech">智谱 GLM-4</div>
+  <div class="tech">智谱 embedding-3</div>
+  <div class="tech">FAISS</div>
+  <div class="tech">XTTS v2</div>
+  <div class="tech">lark-oapi SDK</div>
+  <div class="tech">Python</div>
+  <div class="tech">Bitable API</div>
+</div>
+
+</body>
+</html>

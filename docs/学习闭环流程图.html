@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 700px;
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .title {
+    position: absolute;
+    top: 18px; left: 0; right: 0;
+    text-align: center;
+    font-size: 30px; font-weight: 800; color: #2C3E50;
+  }
+  .subtitle {
+    position: absolute;
+    top: 56px; left: 0; right: 0;
+    text-align: center;
+    font-size: 14px; color: #95A5A6; letter-spacing: 2px;
+  }
+
+  .node {
+    position: absolute;
+    width: 170px; height: 76px;
+    border-radius: 14px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: white; font-weight: 700; text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  }
+  .node .cmd { font-size: 21px; font-weight: 800; margin-bottom: 2px; }
+  .node .desc { font-size: 12px; font-weight: 500; opacity: 0.9; }
+
+  /* Row 1 — 4 nodes, centered. Gap=90. Total=4*170+3*90=950, offset=(1200-950)/2=125 */
+  .n-learn   { top: 120px; left: 125px;  background: #3498DB; }
+  .n-speak   { top: 120px; left: 345px;  background: #E67E22; }
+  .n-quiz    { top: 120px; left: 565px;  background: #9B59B6; }
+  .n-stats   { top: 120px; left: 785px;  background: #1ABC9C; }
+
+  /* Row 2 */
+  .n-translate { top: 395px; left: 345px; background: #2980B9; }
+  .n-submit    { top: 395px; left: 565px; background: #E74C3C; }
+
+  /* Bottom center */
+  .n-growth { top: 570px; left: 410px; width: 300px; height: 66px; background: #27AE60; }
+  .n-growth .cmd { font-size: 18px; }
+  .n-growth .desc { font-size: 12px; }
+
+  /* Phase labels */
+  .phase-label {
+    position: absolute;
+    font-size: 13px; font-weight: 700;
+    padding: 4px 14px; border-radius: 16px;
+    z-index: 10;
+  }
+  .phase-ai { top: 100px; left: 420px; background: #EBF5FB; color: #2980B9; border: 1.5px solid #3498DB; }
+  .phase-community { top: 375px; left: 430px; background: #FDEDEC; color: #E74C3C; border: 1.5px solid #E74C3C; }
+
+  svg.arrows {
+    position: absolute; top: 0; left: 0;
+    width: 1200px; height: 700px;
+    pointer-events: none; z-index: 1;
+  }
+
+  .cycle-label {
+    position: absolute;
+    top: 470px; left: 100px;
+    font-size: 13px; font-weight: 700; color: #27AE60;
+    text-align: center; line-height: 1.6;
+    background: white; padding: 8px 12px;
+    border-radius: 10px; border: 2px solid #27AE60;
+    z-index: 20;
+  }
+</style>
+</head>
+<body>
+
+<div class="title">语声同行 2.0 — 完整学习闭环</div>
+<div class="subtitle">学习 → 练习 → 测验 → 翻译 → 贡献 → 语料回流 → 系统增长</div>
+
+<div class="phase-label phase-ai">AI 辅助学习</div>
+<div class="phase-label phase-community">社群协作增长</div>
+
+<svg class="arrows" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#34495E"/>
+    </marker>
+    <marker id="ahg" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#27AE60"/>
+    </marker>
+  </defs>
+
+  <!-- Row 1 horizontal arrows (between nodes, gap=90, so arrow from right_edge to left_edge) -->
+  <!-- learn right=295, speak left=345 -->
+  <line x1="297" y1="158" x2="343" y2="158" stroke="#34495E" stroke-width="2.5" marker-end="url(#ah)"/>
+  <text x="320" y="148" font-size="10" fill="#7F8C8D" text-anchor="middle" font-weight="600">推荐相关词</text>
+
+  <!-- speak right=515, quiz left=565 -->
+  <line x1="517" y1="158" x2="563" y2="158" stroke="#34495E" stroke-width="2.5" marker-end="url(#ah)"/>
+  <text x="540" y="148" font-size="10" fill="#7F8C8D" text-anchor="middle" font-weight="600">跟读录音</text>
+
+  <!-- quiz right=735, stats left=785 -->
+  <line x1="737" y1="158" x2="783" y2="158" stroke="#34495E" stroke-width="2.5" marker-end="url(#ah)"/>
+  <text x="760" y="148" font-size="10" fill="#7F8C8D" text-anchor="middle" font-weight="600">记录成绩</text>
+
+  <!-- stats bottom → translate top (curve) -->
+  <!-- stats center_x=870, bottom_y=196. translate center_x=430, top_y=395 -->
+  <path d="M 870,198 C 870,300 430,300 430,393" stroke="#34495E" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>
+  <text x="700" y="288" font-size="10" fill="#7F8C8D" font-weight="600">RAG 翻译</text>
+
+  <!-- translate right=515 → submit left=565 -->
+  <line x1="517" y1="433" x2="563" y2="433" stroke="#34495E" stroke-width="2.5" marker-end="url(#ah)"/>
+  <!-- Label ABOVE the arrow line -->
+  <text x="540" y="423" font-size="10" fill="#7F8C8D" text-anchor="middle" font-weight="600">用户提交</text>
+
+  <!-- submit bottom → growth top -->
+  <!-- submit center_x=650, bottom_y=471. growth center_x=560, top_y=570 -->
+  <path d="M 650,473 C 650,530 560,530 560,568" stroke="#34495E" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>
+  <text x="625" y="520" font-size="10" fill="#7F8C8D" font-weight="600">母语者审核</text>
+
+  <!-- CYCLE: growth left(410,603) → left to x=80 → up → learn left(125,158) -->
+  <path d="M 408,603 L 80,603 L 80,158 L 123,158"
+        stroke="#27AE60" stroke-width="3" fill="none" stroke-dasharray="10,5" marker-end="url(#ahg)"/>
+
+</svg>
+
+<div class="node n-learn"><span class="cmd">/learn</span><span class="desc">智能推荐新词 + 语音</span></div>
+<div class="node n-speak"><span class="cmd">/speak</span><span class="desc">口语跟读练习</span></div>
+<div class="node n-quiz"><span class="cmd">/quiz</span><span class="desc">测验检验成果</span></div>
+<div class="node n-stats"><span class="cmd">/stats</span><span class="desc">学习数据报告</span></div>
+<div class="node n-translate"><span class="cmd">/translate</span><span class="desc">RAG 双向翻译</span></div>
+<div class="node n-submit"><span class="cmd">/submit</span><span class="desc">提交新词审核</span></div>
+<div class="node n-growth"><span class="cmd">语料回流，系统持续增长</span><span class="desc">使用越多 → 语料越多 → 服务越好</span></div>
+
+<div class="cycle-label">使用越多<br/>语料越丰富<br/>服务越智能</div>
+
+</body>
+</html>

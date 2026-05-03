@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1000px; height: 620px;
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .title {
+    position: absolute;
+    top: 20px; left: 0; right: 0;
+    text-align: center;
+    font-size: 26px; font-weight: 800; color: #2C3E50;
+  }
+  .subtitle {
+    position: absolute;
+    top: 55px; left: 0; right: 0;
+    text-align: center;
+    font-size: 13px; color: #95A5A6;
+  }
+
+  /* Pyramid layers */
+  .layer {
+    position: absolute;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  .layer .name { font-size: 18px; }
+  .layer .count { font-size: 16px; opacity: 0.9; }
+  .layer .tag { font-size: 12px; opacity: 0.8; margin-left: 10px; }
+
+  /* Layer 1 - top (narrowest, highest quality) */
+  .l1 {
+    top: 100px; left: 250px; width: 500px; height: 100px;
+    background: #27AE60;
+  }
+  /* Layer 2 - middle */
+  .l2 {
+    top: 230px; left: 175px; width: 650px; height: 100px;
+    background: #F39C12;
+  }
+  /* Layer 3 - bottom (widest, fallback) */
+  .l3 {
+    top: 360px; left: 100px; width: 800px; height: 100px;
+    background: #95A5A6;
+  }
+
+  /* Quality indicators */
+  .quality {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 16px;
+  }
+  .q1 { top: 115px; right: 30px; background: #E8F8F0; color: #27AE60; border: 1.5px solid #27AE60; }
+  .q2 { top: 245px; right: 30px; background: #FEF5E7; color: #F39C12; border: 1.5px solid #F39C12; }
+  .q3 { top: 375px; right: 30px; background: #F2F3F4; color: #95A5A6; border: 1.5px solid #95A5A6; }
+
+  /* Bottom note */
+  .note {
+    position: absolute;
+    bottom: 40px; left: 0; right: 0;
+    text-align: center;
+    font-size: 14px; color: #2C3E50; font-weight: 600;
+    line-height: 1.6;
+  }
+  .note span { color: #27AE60; font-weight: 800; }
+  .note small { color: #95A5A6; font-size: 12px; font-weight: 400; }
+
+  /* Left side label */
+  .arrow-label {
+    position: absolute;
+    left: 55px; top: 155px;
+    font-size: 13px; font-weight: 700; color: #3498DB;
+    text-align: center; line-height: 1.6;
+    writing-mode: vertical-lr;
+    letter-spacing: 4px;
+  }
+
+  /* Decorative arrow */
+  .quality-arrow {
+    position: absolute;
+    left: 80px; top: 110px;
+    width: 3px; height: 350px;
+    background: linear-gradient(to bottom, #27AE60, #95A5A6);
+    border-radius: 2px;
+  }
+  .quality-arrow::before {
+    content: '高品质';
+    position: absolute; top: -20px; left: -18px;
+    font-size: 11px; color: #27AE60; font-weight: 700;
+  }
+  .quality-arrow::after {
+    content: '备用';
+    position: absolute; bottom: -20px; left: -12px;
+    font-size: 11px; color: #95A5A6; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="title">分層語音策略</div>
+<div class="subtitle">真人錄音優先 → TTS 補充 → 備用降級，確保每個詞都有語音</div>
+
+<div class="quality-arrow"></div>
+
+<div class="layer l1">
+  <div>
+    <span class="name">Layer 1：真人母語者錄音</span>
+    <span class="tag">最高品質</span>
+  </div>
+  <span class="count">101 個音檔</span>
+</div>
+
+<div class="layer l2">
+  <div>
+    <span class="name">Layer 2：XTTS v2 合成（ASR 驗證通過）</span>
+    <span class="tag">中等品質</span>
+  </div>
+  <span class="count">28 個音檔</span>
+</div>
+
+<div class="layer l3">
+  <div>
+    <span class="name">Layer 3：XTTS v2 合成（未通過驗證）</span>
+    <span class="tag">備用降級</span>
+  </div>
+  <span class="count">22 個音檔</span>
+</div>
+
+<div class="note">
+  <span>151 個排灣語詞彙全部有語音覆蓋</span><br/>
+  <small>XTTS v2 輸出經自訓練 ASR 反向驗證（TTS → ASR → 比對原文），通過驗證才進入 Layer 2</small>
+</div>
+
+</body>
+</html>

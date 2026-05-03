@@ -1,6 +1,6 @@
 """
 feishu_bot/bot.py
-語聲同行 2.0 — 飛書機器人（完整版）
+語聲同行 2.0_yu — 飛書機器人（完整版）
 
 功能：
 - 文字對話（RAG + LLM，vuvu Maliq 角色）
@@ -150,7 +150,7 @@ import requests
 
 def handle_help(open_id: str) -> str:
     return (
-        "🏔️ 語聲同行 2.0 — 排灣語 AI 助手\n"
+        "🏔️ 语声同行 2.0_yu — 排灣語 AI 助手\n"
         "我是 vuvu Maliq，你的排灣族祖母語伴！\n\n"
         "📋 指令列表：\n"
         "• /help — 查看幫助\n"
@@ -451,7 +451,7 @@ def health():
     """健康檢查"""
     return jsonify({
         "status": "ok",
-        "service": "語聲同行 2.0 飛書 Bot",
+        "service": "语声同行 2.0_yu 飛書 Bot",
         "version": "2.0.0",
         "timestamp": int(time.time()),
     })
@@ -463,7 +463,7 @@ def health():
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("  🏔️ 語聲同行 2.0 — 飛書機器人")
+    print("  🏔️ 语声同行 2.0_yu — 飛書機器人")
     print("  Bot 後端啟動中...")
     print("=" * 50)
     

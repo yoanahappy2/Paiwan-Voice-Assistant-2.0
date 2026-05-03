@@ -1,6 +1,6 @@
 """
 feishu_bot/auth.py
-語聲同行 2.0 — 飛書 Token 管理
+語聲同行 2.0_yu — 飛書 Token 管理
 
 負責 tenant_access_token 的獲取與自動刷新。
 Token 有效期 2 小時，過期自動重新獲取。

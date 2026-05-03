@@ -1,4 +1,5 @@
 .env
+.env.bak*
 __pycache__/
 *.pyc
 *.pyo
@@ -15,3 +16,6 @@ modules/__pycache__/
 *.tar.gz
 *.pem
 docs/training_logs/
+.Rhistory
+paiwan_tts_v2/
+eval_tts.py
