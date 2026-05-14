@@ -387,7 +387,7 @@ def recognize_user_audio(audio_path: str) -> dict:
 
         with open(audio_path, "rb") as f:
             files = {"file": (filename, f, content_type)}
-            resp = http_requests.post(ASR_API_URL, files=files, timeout=10)
+            resp = http_requests.post(ASR_API_URL, files=files, timeout=30)
 
         if resp.status_code == 200:
             result = resp.json()
@@ -471,16 +471,68 @@ def _get_sentence_entries() -> list:
 # 口語練習指令處理器
 # ============================================
 
-def handle_speak(open_id: str, message_id: str = "") -> str:
-    """🎤 口說測驗模式"""
-    entries = _get_speakable_entries()
-    if not entries:
-        return "抱歉，目前沒有可用的口說練習題目 😅"
+def handle_speak(open_id: str, message_id: str = "", word: str = "") -> str:
+    """🎤 口說測驗模式（可指定詞彙或隨機出題）"""
+    paiwan = ""
+    chinese = ""
+    audio_path = None
 
-    entry = random.choice(entries)
-    paiwan = entry.get("paiwan", entry.get("排灣語", ""))
-    chinese = entry.get("chinese", entry.get("中文", ""))
-    audio_path = _get_paiwan_audio_path(paiwan)
+    # 如果用戶指定了詞彙，嘗試匹配
+    if word.strip():
+        query = word.strip().lower()
+        # 確保音檔索引已建立
+        _build_real_audio_index()
+        # 先從真人錄音索引找
+        if query in _real_audio_index:
+            paiwan = query
+            audio_path = _real_audio_index[query]
+        else:
+            # 從語料庫精確匹配
+            corpus = get_corpus_data()
+            for entry in corpus:
+                p = entry.get("paiwan", entry.get("排灣語", "")).strip().lower()
+                if p == query:
+                    paiwan = entry.get("paiwan", entry.get("排灣語", ""))
+                    chinese = entry.get("chinese", entry.get("中文", ""))
+                    audio_path = _get_paiwan_audio_path(paiwan)
+                    break
+            # 也嘗試中文→排灣語
+            if not paiwan:
+                for entry in corpus:
+                    c = entry.get("chinese", entry.get("中文", "")).strip()
+                    if c == word.strip():
+                        paiwan = entry.get("paiwan", entry.get("排灣語", ""))
+                        chinese = c
+                        audio_path = _get_paiwan_audio_path(paiwan)
+                        break
+        if not paiwan:
+            # 嘗試翻譯服務
+            try:
+                ts = get_translate_service()
+                result = ts.translate(word.strip())
+                if isinstance(result, dict):
+                    paiwan = result.get("translation", "") if result.get("direction") == "c2p" else word.strip()
+                    chinese = result.get("translation", "") if result.get("direction") == "p2c" else word.strip()
+                    if result.get("direction") == "p2c":
+                        paiwan = word.strip()
+                        chinese = result.get("translation", "")
+                    else:
+                        paiwan = result.get("translation", "")
+                        chinese = word.strip()
+                    audio_path = _get_paiwan_audio_path(paiwan)
+            except Exception:
+                pass
+        if not paiwan:
+            return f"找不到「{word.strip()}」這個詞 😅\n試試 /translate {word.strip()} 先查查看翻譯！"
+    else:
+        # 隨機出題
+        entries = _get_speakable_entries()
+        if not entries:
+            return "抱歉，目前沒有可用的口說練習題目 😅"
+        entry = random.choice(entries)
+        paiwan = entry.get("paiwan", entry.get("排灣語", ""))
+        chinese = entry.get("chinese", entry.get("中文", ""))
+        audio_path = _get_paiwan_audio_path(paiwan)
 
     _speak_state[open_id] = {
         "answer": paiwan,
@@ -493,7 +545,8 @@ def handle_speak(open_id: str, message_id: str = "") -> str:
     # 先回覆文字提示
     text = (
         f"🎤 口說練習！\n\n"
-        f"題目：請用排灣語說出「{chinese}」\n\n"
+        f"🟢 {paiwan}\n"
+        f"🔵 {chinese}\n\n"
         f"🔊 先聽聽正確發音 👇"
     )
     if not audio_path:
@@ -693,8 +746,8 @@ def handle_help() -> str:
         "• /quiz — 排灣語小測驗\n"
         "• /notebook — 個人單字本\n"
         "• /daily — 每日一句排灣語\n"
-        "• /speak — 🎤 口說練習（用語音回覆！）\n"
-        "• /shadow — 👂 跟讀練習（模仿發音）\n"
+        "• /speak [詞] — 🎤 口說測驗（單詞級，嚴格評分，可指定詞）\n"
+        "• /shadow — 👂 跟讀練習（句子級，寬鬆評分，不限次數）\n"
         "• /submit <排灣語> <中文> — 提交新詞彙到社群語料庫\n"
         "• /stats — 📊 學習報告 + 熱力圖\n\n"
         "💡 也可以直接跟我聊天，我會用排灣語+中文回覆你！"
@@ -793,7 +846,7 @@ def handle_lookup(text: str) -> str:
         return f"詞彙查詢服務暫時不可用: {e}"
 
 
-def handle_learn(open_id: str) -> str:
+def handle_learn(open_id: str, message_id: str = "") -> str:
     profile = get_user_profile()
     corpus = get_corpus_data()
 
@@ -825,6 +878,13 @@ def handle_learn(open_id: str) -> str:
         pass
 
     msg = f"📚 學新詞：\n\n🟢 {paiwan}\n🔵 {chinese}\n\n試著跟我說說看！💬"
+
+    # === 發送語音卡片 ===
+    audio_path = _get_paiwan_audio_path(paiwan)
+    if audio_path and message_id:
+        send_audio_reply(message_id, audio_path)
+    elif not audio_path:
+        msg = msg.replace("試著跟我說說看！💬", "試著跟我說說看！💬\n⚠️ 此詞暫無預錄音檔")
 
     # === 對話驅動推薦 ===
     try:
@@ -903,7 +963,7 @@ def handle_quiz(open_id: str) -> str:
     if not paiwan or not chinese:
         return "語料格式異常，請稍後再試"
     _quiz_state[open_id] = {"answer_paiwan": paiwan, "answer_chinese": chinese}
-    msg = f"🎯 排灣語小測驗！\n\n請問「{chinese}」的排灣語怎麼說？\n\n（直接輸入你的答案，或輸入「不知道」跳過）"
+    msg = f"🎯 排灣語小測驗！\n\n請問「{chinese}」的排灣語怎麼說？\n\n（直接輸入你的答案，或輸入「不知道」查看答案）"
     return msg
 
 
@@ -1021,7 +1081,7 @@ def route_message(text: str, open_id: str, message_id: str = "") -> str | None:
         query = text.split(" ", 1)[1] if " " in text else ""
         return handle_lookup(query)
     elif text.startswith("/learn") or text.startswith("/學習"):
-        return handle_learn(open_id)
+        return handle_learn(open_id, message_id)
     elif text.startswith("/quiz") or text.startswith("/測驗"):
         return handle_quiz(open_id)
     elif text.startswith("/notebook") or text.startswith("/單字本"):
@@ -1034,7 +1094,8 @@ def route_message(text: str, open_id: str, message_id: str = "") -> str | None:
     elif text.startswith("/stats") or text.startswith("/統計"):
         return handle_stats(open_id)
     elif text.startswith("/speak") or text.startswith("/口說"):
-        return handle_speak(open_id, message_id)
+        word = text[6:].strip() if text.startswith("/speak") else text[3:].strip()
+        return handle_speak(open_id, message_id, word)
     elif text.startswith("/shadow") or text.startswith("/跟讀"):
         return handle_shadow(open_id, message_id)
     else:
@@ -1088,30 +1149,24 @@ def handle_im_message(data) -> None:
             
             # 寫入飛書多維表格（語料收集 — 主動學習 + 統計追蹤）
             try:
-                from bitable_writer import write_transcription, stats_tracker
+                from bitable_writer import stats_tracker
                 learner = get_active_learner()
                 
                 if text.startswith("/translate") or text.startswith("/翻譯"):
                     # 翻譯指令：已在 handle_translate 裡處理 Bitable 寫入
                     pass
                 else:
-                    # 一般對話：只記錄用戶輸入（低置信度，需人工確認）
-                    write_transcription(
-                        asr_text=text,
-                        chinese_translation="",
-                        confidence=0.0,
-                        source="飛書對話",
-                        confidence_level="low",
-                        method="chat",
-                        needs_confirmation=True,
-                    )
-                    learner.log_interaction(
-                        user_input=text,
-                        translation_result={"method": "chat", "translation": ""},
-                        confidence_eval={"confidence": 0.0, "level": "low", "needs_confirmation": True, "needs_human_review": True, "auto_accept": False},
-                        source="飛書對話",
-                    )
-                    print(f"  ✅ 已寫入 Bitable (一般對話)")
+                    # 非翻譯指令：不寫入語料收集表
+                    # 語料收集表只收錄翻譯結果，聊天/測驗回答/確認等不入表
+                    pass
+                    
+                # 統計追蹤仍然記錄（用於熱力圖等）
+                learner.log_interaction(
+                    user_input=text,
+                    translation_result={"method": "chat", "translation": ""},
+                    confidence_eval={"confidence": 0.0, "level": "low", "needs_confirmation": False, "needs_human_review": False, "auto_accept": False},
+                    source="飛書對話",
+                )
             except Exception as e:
                 print(f"  ⚠️ Bitable 寫入失敗: {e}")
 

@@ -1,7 +1,7 @@
 """
 crawl_klokah.py
 從族語E樂園 (klokah.tw) 批量爬取排灣語詞彙
-方言代碼: d=24 (排灣語)
+方言代碼: d=23 (東排灣語)
 
 輸出: data/klokah_paiwan_corpus.json
 """
@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 
 BASE_URL = "https://web.klokah.tw/php/multiSearchResult.php"
-DIALECT = 24  # 排灣語
+DIALECT = 23  # 東排灣語（d=23=東, d=24=北, d=25=中, d=26=南）
 
 # 搜索用的字元覆蓋（用每個排灣語常見起始字母）
 SEARCH_TERMS = [
@@ -145,7 +145,7 @@ def main():
             "source": "族語E樂園 (klokah.tw)",
             "url": "https://web.klokah.tw/multiSearch/",
             "dialect": "排灣語 (Paiwan)",
-            "dialect_code": 24,
+            "dialect_code": 23,
             "total_entries": len(final_entries),
             "crawled_at": time.strftime("%Y-%m-%d %H:%M:%S"),
         },

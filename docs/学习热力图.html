@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1100px; height: 680px;
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .title {
+    position: absolute; top: 20px; left: 0; right: 0;
+    text-align: center;
+    font-size: 24px; font-weight: 800; color: #2C3E50;
+  }
+  .subtitle {
+    position: absolute; top: 52px; left: 0; right: 0;
+    text-align: center;
+    font-size: 13px; color: #95A5A6;
+  }
+
+  /* Heatmap section */
+  .heatmap-section {
+    position: absolute; top: 85px; left: 60px; right: 60px;
+  }
+  .user-label {
+    font-size: 13px; font-weight: 700; color: #2C3E50;
+    margin-bottom: 4px;
+  }
+  .heatmap-grid {
+    display: flex; gap: 3px; margin-bottom: 16px;
+  }
+  .day-cell {
+    width: 22px; height: 22px;
+    border-radius: 3px;
+    position: relative;
+  }
+  .day-cell .tip {
+    display: none;
+    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    background: #2C3E50; color: white; padding: 3px 8px;
+    border-radius: 4px; font-size: 10px; white-space: nowrap; z-index: 10;
+  }
+  .day-cell:hover .tip { display: block; }
+
+  /* Legend */
+  .legend {
+    position: absolute; top: 52px; right: 60px;
+    display: flex; align-items: center; gap: 4px;
+    font-size: 11px; color: #95A5A6;
+  }
+  .legend-cell {
+    width: 14px; height: 14px; border-radius: 2px;
+  }
+
+  /* Stats cards */
+  .stats-row {
+    position: absolute; top: 400px; left: 60px; right: 60px;
+    display: flex; gap: 16px; justify-content: center;
+  }
+  .stat-card {
+    width: 160px; height: 90px;
+    background: #F8F9FA;
+    border: 1.5px solid #E9ECEF;
+    border-radius: 12px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .stat-num {
+    font-size: 28px; font-weight: 800; color: #2C3E50;
+  }
+  .stat-label {
+    font-size: 12px; color: #7F8C8D; margin-top: 2px;
+  }
+
+  /* Bottom note */
+  .bottom-note {
+    position: absolute; bottom: 30px; left: 60px; right: 60px;
+    background: #F0FFF4; border: 1.5px solid #27AE60; border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 13px; color: #2C3E50; line-height: 1.6;
+  }
+  .bottom-note strong { color: #27AE60; }
+
+  /* Month labels */
+  .month-labels {
+    display: flex; gap: 0; margin-bottom: 2px; margin-left: 0;
+  }
+  .month-label {
+    font-size: 10px; color: #95A5A6; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="title">用户学习热力图</div>
+<div class="subtitle">数据来源：飞书 Bitable 多维表格 · 每次学习/翻译/测验自动记录</div>
+
+<div class="legend">
+  少
+  <div class="legend-cell" style="background:#E8F5E9;"></div>
+  <div class="legend-cell" style="background:#81C784;"></div>
+  <div class="legend-cell" style="background:#4CAF50;"></div>
+  <div class="legend-cell" style="background:#2E7D32;"></div>
+  多
+</div>
+
+<div class="heatmap-section">
+  <!-- Month labels -->
+  <div class="month-labels">
+    <div class="month-label" style="width:132px;">4月</div>
+    <div class="month-label" style="width:660px;">5月</div>
+  </div>
+
+  <!-- User 1: Yoana (活躍用戶) -->
+  <div class="user-label">Yoana（开发者自测）</div>
+  <div class="heatmap-grid" id="user1"></div>
+
+  <!-- User 2: 測試者A -->
+  <div class="user-label">测试者 A</div>
+  <div class="heatmap-grid" id="user2"></div>
+
+  <!-- User 3: 測試者B -->
+  <div class="user-label">测试者 B</div>
+  <div class="heatmap-grid" id="user3"></div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-num" style="color:#27AE60;">3</div>
+    <div class="stat-label">活跃用户</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">25</div>
+    <div class="stat-label">总交互次数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:#E74C3C;">5</div>
+    <div class="stat-label">翻译请求</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:#3498DB;">47</div>
+    <div class="stat-label">已学词汇</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:#9B59B6;">92%</div>
+    <div class="stat-label">测验正确率</div>
+  </div>
+</div>
+
+<div class="bottom-note">
+  <strong>📊 数据飞轮：</strong>用户每次学习、翻译、测验、提交新词，数据自动写入飞书 Bitable → 形成学习热力图 → 驱动智能推荐 → 高置信度翻译自动回流语料库。<br/>
+  <strong>不只是「记录器」，是社群语言保存平台。</strong>每位用户的使用都在让系统变得更好。
+</div>
+
+<script>
+function generateHeatmap(containerId, data) {
+  const container = document.getElementById(containerId);
+  const colors = ['#EBEDEF', '#C8E6C9', '#81C784', '#4CAF50', '#2E7D32'];
+  
+  // 30 days: Apr 8 - May 7
+  for (let i = 0; i < 30; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'day-cell';
+    const val = data[i] || 0;
+    let colorIdx = 0;
+    if (val >= 1) colorIdx = 1;
+    if (val >= 3) colorIdx = 2;
+    if (val >= 5) colorIdx = 3;
+    if (val >= 8) colorIdx = 4;
+    cell.style.background = colors[colorIdx];
+    
+    const day = 8 + i;
+    const month = day <= 30 ? '4月' : '5月';
+    const dayStr = day <= 30 ? day : day - 30;
+    
+    const tip = document.createElement('div');
+    tip.className = 'tip';
+    tip.textContent = `${month}${dayStr}日: ${val} 次交互`;
+    cell.appendChild(tip);
+    
+    container.appendChild(cell);
+  }
+}
+
+// Yoana: 開發期活躍
+generateHeatmap('user1', [
+  0,0,0,0,0,0,  // Apr 8-13 (準備期)
+  0,0,0,0,0,0,  // Apr 14-19
+  2,3,0,0,0,0,  // Apr 20-25 (開始開發)
+  5,7,0,0,      // Apr 26-29 (密集測試)
+  4,3,0,0,0,0,  // Apr 30-May 5 (持續使用)
+  6,8,5          // May 3-7 (復賽衝刺)
+]);
+
+// 測試者A: 穩定學習
+generateHeatmap('user2', [
+  0,0,0,0,0,0,
+  0,0,0,0,0,0,
+  0,0,0,0,0,0,
+  0,0,0,0,
+  1,2,3,2,1,0,  // 開始使用
+  4,3,2
+]);
+
+// 測試者B: 剛加入
+generateHeatmap('user3', [
+  0,0,0,0,0,0,
+  0,0,0,0,0,0,
+  0,0,0,0,0,0,
+  0,0,0,0,
+  0,0,0,0,0,0,
+  1,2,0
+]);
+</script>
+
+</body>
+</html>

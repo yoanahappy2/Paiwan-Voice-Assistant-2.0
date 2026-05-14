@@ -144,7 +144,8 @@ class PaiwanKnowledgeGraph:
         if self._corpus_index is not None:
             return
         with open(CORPUS_PATH, "r", encoding="utf-8") as f:
-            entries = json.load(f)["entries"]
+            raw = json.load(f)
+        entries = raw.get("entries", raw) if isinstance(raw, dict) else raw
 
         self._corpus_index = defaultdict(list)
         for e in entries:

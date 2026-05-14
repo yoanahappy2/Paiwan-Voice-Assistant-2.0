@@ -9,6 +9,9 @@ venv/
 .gradio/
 tests/results/
 data/*.npy
+*.index
+results/
+agent_framework/storage/state/
 *.egg-info/
 modules/__pycache__/
 ~$*
@@ -19,3 +22,8 @@ docs/training_logs/
 .Rhistory
 paiwan_tts_v2/
 eval_tts.py
+
+# Agent 系統（課程專用，不公開）
+agent_core.py
+agent_tools.py
+feishu_bot/bot_agent.py

@@ -5,7 +5,7 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    width: 1100px; height: 700px;
+    width: 1200px; height: 780px;
     font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: white;
     position: relative;
@@ -14,234 +14,278 @@
 
   .title {
     position: absolute;
-    top: 15px; left: 0; right: 0;
+    top: 18px; left: 0; right: 0;
     text-align: center;
-    font-size: 24px; font-weight: 800; color: #2C3E50;
+    font-size: 26px; font-weight: 800; color: #2C3E50;
   }
   .subtitle {
     position: absolute;
-    top: 48px; left: 0; right: 0;
+    top: 52px; left: 0; right: 0;
     text-align: center;
-    font-size: 12px; color: #95A5A6;
+    font-size: 13px; color: #7F8C8D;
+    letter-spacing: 1px;
   }
 
-  /* Top: Feishu Client */
-  .client-bar {
+  /* === Framework box === */
+  .framework-box {
     position: absolute;
-    top: 75px; left: 150px; width: 800px; height: 55px;
-    background: #3B5998; border-radius: 12px;
+    top: 80px; left: 60px; width: 1080px; height: 410px;
+    border: 2.5px solid #34495E; border-radius: 16px;
+    background: #FAFBFC;
+  }
+  .framework-label {
+    position: absolute;
+    top: -14px; left: 50%; transform: translateX(-50%);
+    background: #34495E; color: white;
+    padding: 4px 24px; border-radius: 12px;
+    font-size: 15px; font-weight: 800; letter-spacing: 2px;
+  }
+
+  /* === Three AI Engines === */
+  .engines-row {
+    position: absolute;
+    top: 105px; left: 100px; right: 100px;
+    display: flex; justify-content: center; gap: 24px;
+  }
+  .engine {
+    width: 300px; height: 150px;
+    border-radius: 14px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: white; text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    position: relative;
+  }
+  .engine .e-layer { font-size: 11px; opacity: 0.75; font-weight: 600; letter-spacing: 1px; }
+  .engine .e-name { font-size: 18px; font-weight: 800; margin: 6px 0; }
+  .engine .e-tech { font-size: 12px; opacity: 0.9; line-height: 1.6; }
+  .engine .e-metric { 
+    position: absolute; bottom: 10px; right: 14px;
+    font-size: 22px; font-weight: 900; opacity: 0.3;
+  }
+
+  .eng-asr   { background: linear-gradient(135deg, #E74C3C, #C0392B); }
+  .eng-trans { background: linear-gradient(135deg, #3498DB, #2980B9); }
+  .eng-grow  { background: linear-gradient(135deg, #27AE60, #229954); }
+
+  /* === Data Flywheel === */
+  .flywheel-bar {
+    position: absolute;
+    top: 275px; left: 140px; width: 920px; height: 44px;
+    background: linear-gradient(90deg, #F39C12, #E67E22, #F39C12);
+    border-radius: 22px;
     display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 16px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    color: white; font-weight: 700; font-size: 14px;
+    box-shadow: 0 3px 10px rgba(243,156,18,0.3);
   }
-  .client-bar span { margin: 0 15px; font-size: 13px; opacity: 0.8; }
+  .flywheel-bar .fw-icon { margin: 0 8px; font-size: 18px; }
+  .flywheel-bar .fw-text { opacity: 0.9; font-size: 12px; margin: 0 6px; }
 
-  /* Arrow down */
-  .down-arrow {
-    position: absolute; top: 134px; left: 530px;
-    width: 3px; height: 30px; background: #2C3E50;
-  }
-  .down-arrow::after {
-    content: ''; position: absolute; bottom: -6px; left: -5px;
-    border-left: 6px solid transparent; border-right: 6px solid transparent;
-    border-top: 8px solid #2C3E50;
-  }
-
-  /* Bot Backend */
-  .bot-box {
+  /* === Knowledge layer inside framework === */
+  .knowledge-strip {
     position: absolute;
-    top: 170px; left: 250px; width: 600px; height: 50px;
-    background: #2980B9; border-radius: 10px;
+    top: 335px; left: 120px; width: 960px; height: 40px;
+    background: #8E44AD; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 15px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    color: white; font-weight: 700; font-size: 13px;
   }
-  .bot-box small { font-size: 11px; opacity: 0.7; margin-left: 10px; }
+  .knowledge-strip span { margin: 0 10px; font-size: 11px; opacity: 0.85; }
 
-  /* Agent boxes - Row */
-  .agent-row {
+  /* === Delivery Carriers === */
+  .carrier-row {
     position: absolute;
-    top: 260px; left: 40px; right: 40px;
-    display: flex; justify-content: center; gap: 16px;
+    top: 380px; left: 100px; right: 100px;
+    display: flex; justify-content: center; gap: 20px;
   }
-  .agent {
-    width: 150px; height: 80px;
+  .carrier {
+    width: 320px; height: 70px;
     border-radius: 12px;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    color: white; font-weight: 700; text-align: center;
+    color: white; text-align: center;
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
   }
-  .agent .a-name { font-size: 13px; font-weight: 800; }
-  .agent .a-desc { font-size: 10px; opacity: 0.85; margin-top: 3px; }
+  .carrier .c-name { font-size: 15px; font-weight: 800; }
+  .carrier .c-desc { font-size: 11px; opacity: 0.85; margin-top: 3px; }
 
-  .a-asr  { background: #E74C3C; }
-  .a-trans{ background: #3498DB; }
-  .a-teach{ background: #9B59B6; }
-  .a-speak{ background: #E67E22; }
-  .a-grow { background: #27AE60; }
+  .c-feishu { background: linear-gradient(135deg, #3B5998, #2D4373); }
+  .c-web    { background: linear-gradient(135deg, #FF6B35, #E55A2B); }
 
-  /* Arrows from bot to agents */
-  .bot-to-agents {
-    position: absolute; top: 222px; left: 260px;
-  }
-
-  /* Knowledge Layer */
-  .knowledge-bar {
-    position: absolute;
-    top: 385px; left: 150px; width: 800px; height: 50px;
-    background: #F39C12; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 14px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  }
-  .knowledge-bar span { margin: 0 8px; font-size: 12px; opacity: 0.85; }
-
-  /* Bitable */
+  /* === Bitable Layer === */
   .bitable-bar {
     position: absolute;
-    top: 480px; left: 250px; width: 600px; height: 50px;
-    background: #1ABC9C; border-radius: 10px;
+    top: 520px; left: 140px; width: 920px; height: 50px;
+    background: #1ABC9C; border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
     color: white; font-weight: 700; font-size: 14px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
   }
   .bitable-bar span { margin: 0 8px; font-size: 12px; opacity: 0.85; }
 
-  /* Bottom tech stack */
+  /* === Tech Stack === */
   .tech-row {
     position: absolute;
-    top: 570px; left: 100px; right: 100px;
-    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+    top: 600px; left: 80px; right: 80px;
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
   }
   .tech {
-    padding: 6px 14px;
+    padding: 6px 16px;
     background: #F8F9FA; border: 1.5px solid #DEE2E6;
     border-radius: 8px;
     font-size: 11px; font-weight: 600; color: #495057;
   }
 
-  /* SVG for connection lines */
-  svg.lines {
-    position: absolute; top: 0; left: 0;
-    width: 1100px; height: 700px;
-    pointer-events: none; z-index: 0;
-  }
+  /* === Layer labels === */
   .layer-label {
-    position: absolute; font-size: 11px; font-weight: 700; color: #7F8C8D;
-    writing-mode: vertical-lr; letter-spacing: 2px;
+    position: absolute; font-size: 11px; font-weight: 700; color: #95A5A6;
+    letter-spacing: 1px;
   }
-  .l-platform { top: 78px; left: 50px; }
-  .l-backend  { top: 172px; left: 50px; }
-  .l-agents   { top: 275px; left: 50px; }
-  .l-knowledge{ top: 392px; left: 50px; }
-  .l-bitable  { top: 488px; left: 50px; }
-  .l-tech     { top: 580px; left: 50px; }
+
+  /* === SVG arrows === */
+  svg.arrows {
+    position: absolute; top: 0; left: 0;
+    width: 1200px; height: 780px;
+    pointer-events: none; z-index: 1;
+  }
+
+  /* Circular flywheel arrows */
+  .flywheel-left, .flywheel-right {
+    position: absolute;
+    font-size: 20px; color: #F39C12; font-weight: 900;
+  }
+  .flywheel-left { top: 277px; left: 90px; }
+  .flywheel-right { top: 277px; right: 90px; }
 </style>
 </head>
 <body>
 
-<div class="title">语声同行 2.0 — 系统架构</div>
-<div class="subtitle">基于 Agent-based 模块化架构的濒危语言 AI 保护框架</div>
+<div class="title">濒危语言 AI 保护框架 — 系统架构</div>
+<div class="subtitle">三层 AI 引擎 · 数据飞轮闭环 · 可迁移至任何濒危语言</div>
 
-<!-- Layer labels -->
-<div class="layer-label l-platform">平台层</div>
-<div class="layer-label l-backend">后端层</div>
-<div class="layer-label l-agents">Agent 层</div>
-<div class="layer-label l-knowledge">知识层</div>
-<div class="layer-label l-bitable">数据层</div>
-<div class="layer-label l-tech">技术栈</div>
+<!-- Framework outer box -->
+<div class="framework-box">
+  <div class="framework-label">濒危语言 AI 保护框架</div>
 
-<!-- Horizontal layer lines -->
-<svg class="lines" xmlns="http://www.w3.org/2000/svg">
-  <line x1="90" y1="73" x2="1060" y2="73" stroke="#E5E5E5" stroke-width="1"/>
-  <line x1="90" y1="167" x2="1060" y2="167" stroke="#E5E5E5" stroke-width="1"/>
-  <line x1="90" y1="252" x2="1060" y2="252" stroke="#E5E5E5" stroke-width="1"/>
-  <line x1="90" y1="378" x2="1060" y2="378" stroke="#E5E5E5" stroke-width="1"/>
-  <line x1="90" y1="473" x2="1060" y2="473" stroke="#E5E5E5" stroke-width="1"/>
-  <line x1="90" y1="558" x2="1060" y2="558" stroke="#E5E5E5" stroke-width="1"/>
-
-  <!-- Bot → agents vertical lines -->
-  <line x1="550" y1="222" x2="550" y2="258" stroke="#2980B9" stroke-width="2" stroke-dasharray="4,3"/>
-  <!-- Fan out to 5 agents -->
-  <line x1="550" y1="258" x2="115" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
-  <line x1="550" y1="258" x2="285" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
-  <line x1="550" y1="258" x2="455" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
-  <line x1="550" y1="258" x2="625" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
-  <line x1="550" y1="258" x2="795" y2="260" stroke="#BDC3C7" stroke-width="1.5"/>
-
-  <!-- Agents → knowledge -->
-  <line x1="550" y1="342" x2="550" y2="383" stroke="#F39C12" stroke-width="2" stroke-dasharray="4,3"/>
-
-  <!-- Knowledge → Bitable -->
-  <line x1="550" y1="437" x2="550" y2="478" stroke="#1ABC9C" stroke-width="2" stroke-dasharray="4,3"/>
-</svg>
-
-<!-- Platform Layer -->
-<div class="client-bar">
-  飞书客户端
-  <span>|</span> Bot 聊天 <span>|</span> 语音消息 <span>|</span> 多维表格
-</div>
-
-<div class="down-arrow"></div>
-
-<!-- Backend -->
-<div class="bot-box">
-  语声同行 Bot 后端（Python + lark-oapi）
-  <small>WebSocket 长连接</small>
-</div>
-
-<!-- Agents -->
-<div class="agent-row">
-  <div class="agent a-asr">
-    <span class="a-name">ASR Agent</span>
-    <span class="a-desc">语音识别</span>
-    <span class="a-desc">96.8%</span>
+  <!-- Three AI Engines -->
+  <div class="engines-row">
+    <div class="engine eng-asr">
+      <span class="e-layer">Layer 1</span>
+      <span class="e-name">🎤 语音识别引擎</span>
+      <span class="e-tech">Whisper-small + LoRA<br>三层音韵校正</span>
+      <span class="e-metric">96.8%</span>
+    </div>
+    <div class="engine eng-trans">
+      <span class="e-layer">Layer 2</span>
+      <span class="e-name">🌐 翻译引擎</span>
+      <span class="e-tech">RAG 混合检索翻译<br>词汇表 → Hash Map → LLM</span>
+      <span class="e-metric">0.916</span>
+    </div>
+    <div class="engine eng-grow">
+      <span class="e-layer">Layer 3</span>
+      <span class="e-name">📈 知识增长引擎</span>
+      <span class="e-tech">主动学习闭环 · 知识图谱<br>用户确认 → 语料回流 → 增量重训</span>
+    </div>
   </div>
-  <div class="agent a-trans">
-    <span class="a-name">Translation</span>
-    <span class="a-desc">RAG 翻译</span>
-    <span class="a-desc">BLEU 0.916</span>
+
+  <!-- Data Flywheel -->
+  <div class="flywheel-bar">
+    <span class="fw-icon">⟲</span>
+    <span class="fw-text">数据飞轮：用户学习 → 数据回流 → 语料增长 → 模型/检索变好 → 吸引更多用户</span>
+    <span class="fw-icon">⟲</span>
   </div>
-  <div class="agent a-teach">
-    <span class="a-name">Teaching</span>
-    <span class="a-desc">教学/测验</span>
-    <span class="a-desc">意图分类</span>
+  <div class="flywheel-left">→</div>
+  <div class="flywheel-right">←</div>
+
+  <!-- Knowledge Layer -->
+  <div class="knowledge-strip">
+    知识层
+    <span>|</span> RAG 语料 4,844 条
+    <span>|</span> FAISS 向量索引
+    <span>|</span> 音韵规则引擎
+    <span>|</span> 知识图谱 47 词
   </div>
-  <div class="agent a-speak">
-    <span class="a-name">Speaking</span>
-    <span class="a-desc">口语练习</span>
-    <span class="a-desc">ASR→评价</span>
-  </div>
-  <div class="agent a-grow">
-    <span class="a-name">Growth</span>
-    <span class="a-desc">语料增长</span>
-    <span class="a-desc">主动学习</span>
+
+  <!-- Delivery Carriers -->
+  <div class="carrier-row">
+    <div class="carrier c-feishu">
+      <span class="c-name">飞书 Bot（9 指令）</span>
+      <span class="c-desc">翻译 / 教学 / 测验 / 口语练习 / 语音闭环 / 社群语料</span>
+    </div>
+    <div class="carrier c-web">
+      <span class="c-name">HF Space（Web Demo）</span>
+      <span class="c-desc">浏览器直接体验 ASR 引擎 · 录音 → 实时辨识评分</span>
+    </div>
   </div>
 </div>
 
-<!-- Knowledge Layer -->
-<div class="knowledge-bar">
-  知识层
-  <span>|</span> RAG 语料 4,844 条 <span>|</span> FAISS 向量索引 <span>|</span> 音韵规则引擎 <span>|</span> 知识图谱 47 词
-</div>
-
-<!-- Bitable -->
+<!-- Bitable Layer (outside framework = shared infrastructure) -->
+<div class="layer-label" style="top:505px; left:52px;">数据层</div>
 <div class="bitable-bar">
-  飞书 Bitable 多维表格
-  <span>|</span> 学习热力图 <span>|</span> 社群语料审核 <span>|</span> 词汇掌握统计
+  飞书 Bitable 社群语言保存平台
+  <span>|</span> 学习热力图
+  <span>|</span> 社群语料审核（用户提交 → 母语者审核 → 回流语料库）
+  <span>|</span> 词汇掌握统计
 </div>
 
 <!-- Tech Stack -->
+<div class="layer-label" style="top:585px; left:52px;">技术栈</div>
 <div class="tech-row">
-  <div class="tech">Whisper-small + LoRA</div>
-  <div class="tech">智谱 GLM-4</div>
-  <div class="tech">智谱 embedding-3</div>
+  <div class="tech">Whisper-small + LoRA (14MB)</div>
+  <div class="tech">智谱 GLM-4-Flash / Plus</div>
+  <div class="tech">智谱 embedding-3 (2048d)</div>
   <div class="tech">FAISS</div>
-  <div class="tech">XTTS v2</div>
+  <div class="tech">XTTS v2 + 真人录音</div>
   <div class="tech">lark-oapi SDK</div>
   <div class="tech">Python</div>
   <div class="tech">Bitable API</div>
+  <div class="tech">HuggingFace Spaces</div>
+</div>
+
+<!-- SVG Arrows -->
+<svg class="arrows" xmlns="http://www.w3.org/2000/svg">
+  <!-- Engines → Flywheel -->
+  <defs>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#F39C12"/>
+    </marker>
+    <marker id="arrowTeal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#1ABC9C"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#95A5A6"/>
+    </marker>
+  </defs>
+
+  <!-- Engine → Flywheel (down) -->
+  <line x1="600" y1="258" x2="600" y2="273" stroke="#F39C12" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Flywheel → Knowledge (down) -->
+  <line x1="600" y1="321" x2="600" y2="333" stroke="#8E44AD" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- Knowledge → Carriers (down) -->
+  <line x1="600" y1="377" x2="600" y2="390" stroke="#95A5A6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <!-- Framework → Bitable (down) -->
+  <line x1="600" y1="492" x2="600" y2="518" stroke="#1ABC9C" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowTeal)"/>
+
+  <!-- Bitable → Flywheel feedback loop (right side) -->
+  <path d="M1060,545 Q1120,545 1120,297 Q1120,297 1062,297" 
+        stroke="#1ABC9C" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowTeal)"/>
+  <text x="1125" y="430" fill="#1ABC9C" font-size="10" font-weight="600" 
+        transform="rotate(90,1125,430)">语料回流</text>
+
+  <!-- Carriers feedback to engines (left side) -->
+  <path d="M100,430 Q40,430 40,180 Q40,180 98,180"
+        stroke="#95A5A6" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+  <text x="35" y="310" fill="#95A5A6" font-size="10" font-weight="600"
+        transform="rotate(-90,35,310)">用户数据</text>
+</svg>
+
+<!-- Migration note -->
+<div style="position:absolute; bottom:20px; left:0; right:0; text-align:center;">
+  <span style="font-size:12px; color:#95A5A6;">
+    可迁移性：收集 100-200 句录音 + 200-500 句双语对照 → 1-2 周适配新语种
+  </span>
 </div>
 
 </body>

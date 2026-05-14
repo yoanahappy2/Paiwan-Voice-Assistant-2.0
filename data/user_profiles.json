@@ -1,0 +1,147 @@
+{
+  "ou_04abace3d054745d4cc445ddf6d250b9": {
+    "learned": [
+      "maca",
+      "ku kaka a tjaljaljak a vavayan",
+      "tapuluq saka alu",
+      "izua za milimilingan na kacalisian"
+    ],
+    "learned_set": [
+      "maca",
+      "ku kaka a tjaljaljak a vavayan",
+      "tapuluq saka alu",
+      "izua za milimilingan na kacalisian"
+    ],
+    "wrong_count": {
+      "tapuluq saka alu": 1
+    },
+    "correct_count": {},
+    "streak": 1,
+    "last_seen": "2026-05-04",
+    "first_seen": "2026-05-04"
+  },
+  "test_automated_001": {
+    "learned": [
+      "kamakudakuda",
+      "tima zua?",
+      "cemdas",
+      "masulem",
+      "qayaqayam",
+      "drusa",
+      "lima",
+      "dridri",
+      "tjelj",
+      "mangetjez nungida?"
+    ],
+    "learned_set": [
+      "kamakudakuda",
+      "tima zua?",
+      "cemdas",
+      "masulem",
+      "qayaqayam",
+      "drusa",
+      "lima",
+      "dridri",
+      "tjelj",
+      "mangetjez nungida?"
+    ],
+    "wrong_count": {
+      "tima zua?": 1,
+      "masulem": 1,
+      "drusa": 1,
+      "dridri": 1,
+      "mangetjez nungida?": 1
+    },
+    "correct_count": {},
+    "streak": 1,
+    "last_seen": "2026-05-04",
+    "first_seen": "2026-05-04"
+  },
+  "test_user": {
+    "learned": [
+      "kaka i vu’aljaku/au sun na kemeljang tjai kaka"
+    ],
+    "learned_set": [
+      "kaka i vu’aljaku/au sun na kemeljang tjai kaka"
+    ],
+    "wrong_count": {},
+    "correct_count": {},
+    "streak": 1,
+    "last_seen": "2026-05-11",
+    "first_seen": "2026-05-11"
+  },
+  "test_auto": {
+    "learned": [
+      "kinanan",
+      "na padjalim aravac sun tua su kinasan kama."
+    ],
+    "learned_set": [
+      "kinanan",
+      "na padjalim aravac sun tua su kinasan kama."
+    ],
+    "wrong_count": {},
+    "correct_count": {},
+    "streak": 1,
+    "last_seen": "2026-05-11",
+    "first_seen": "2026-05-11"
+  },
+  "test": {
+    "learned": [
+      "masalu"
+    ],
+    "learned_set": [
+      "masalu"
+    ],
+    "wrong_count": {},
+    "correct_count": {
+      "masalu": 2
+    },
+    "streak": 1,
+    "last_seen": "2026-05-12",
+    "first_seen": "2026-05-12"
+  },
+  "anonymous": {
+    "learned": [
+      "masalu",
+      "vavay",
+      "demin"
+    ],
+    "learned_set": [
+      "masalu",
+      "vavay",
+      "demin"
+    ],
+    "wrong_count": {
+      "demin": 1
+    },
+    "correct_count": {},
+    "streak": 1,
+    "last_seen": "2026-05-12",
+    "first_seen": "2026-05-12"
+  },
+  "user": {
+    "learned": [
+      "nanguangua",
+      "masalu",
+      "navenec",
+      "tjemak",
+      "kazangiljan",
+      "kadjunangan",
+      "kipusalu"
+    ],
+    "learned_set": [
+      "nanguangua",
+      "masalu",
+      "navenec",
+      "tjemak",
+      "kazangiljan",
+      "kadjunangan",
+      "kipusalu"
+    ],
+    "wrong_count": {},
+    "correct_count": {},
+    "streak": 2,
+    "last_seen": "2026-05-13",
+    "first_seen": "2026-05-12"
+  }
+}
